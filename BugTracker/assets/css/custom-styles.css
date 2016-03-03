@@ -1,0 +1,99 @@
+﻿/*Home page*/
+
+
+/* NonAuthenticatedLayout page */
+#site-logo 
+{
+    display: block;
+    height: 34px !important;
+    margin: 6px auto;
+}
+
+#site-logo > img
+{
+    width: 220px;
+    height: auto;
+}
+
+/* UserProfile page */
+.avatar 
+{
+    width: 130px;
+    height: auto;
+    padding: 18px;
+    background: #ffffff;
+}
+
+.profile-header-background 
+{
+    border-bottom: solid 2px grey;
+}
+
+.user-profile > .row > .col-sm-12 
+{
+    height: 100px;
+}
+
+.partial-form 
+{
+    width: 500px;
+    margin: auto;
+}
+
+.partial-form .btn-block 
+{
+    margin-top: 20px;
+}
+
+.partial-form .btn-block.budgets
+{
+    margin-top: 5px;
+}
+
+.profile-info-left .action-buttons
+{
+    margin-top: 10px;
+}
+
+/*Generic*/
+
+.btn-xs, .btn-md
+{
+    width: 86px;
+}
+
+.btn-xs.budgetItem
+{
+    width: auto;
+}
+
+.lead
+{
+    margin: 30px 0;
+}
+
+#col-right 
+{
+    padding-left: 0;
+}
+
+@media(max-width: 850px) 
+{
+    .create-account-form .input-group 
+    {
+        display: block;
+    }
+
+    .create-account-form .form-control
+    {
+        margin-bottom: 10px;
+    }
+}
+
+@media(max-width: 650px) 
+{
+    .partial-form 
+    {
+        width: auto;
+    }
+}

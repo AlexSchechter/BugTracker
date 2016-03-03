@@ -1,44 +1,167 @@
 ﻿<!DOCTYPE html>
-<html>
+<!--[if IE 9 ]><html class="ie ie9" lang="en" class="no-js"> <![endif]-->
+<!--[if !(IE)]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <title>Bug Tracker</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="Bug Tracker">
+    <meta name="author" content="Alexander Schechter">
+    <!-- CSS -->
+    <link href="~/assets/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/ionicons.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/main.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/custom-styles.css" rel="stylesheet" type="text/css">
 
+    <!-- Google Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,300,400,700' rel='stylesheet' type='text/css'>
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" type="image/png" sizes="144x144" href="~/assets/ico/BugTracker-favicon144x144.png">
+    <link rel="apple-touch-icon-precomposed" type="image/png" sizes="114x114" href="~/assets/ico/BugTracker-favicon114x114.png">
+    <link rel="apple-touch-icon-precomposed" type="image/png" sizes="72x72" href="~/assets/ico/BugTracker-favicon72x72.png">
+    <link rel="apple-touch-icon-precomposed" type="image/png" sizes="57x57" href="~/assets/ico/BugTracker-favicon57x57.png">
+    <link rel="shortcut icon" href="~/assets/ico/favicon.ico">
 </head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+@using Microsoft.AspNet.Identity
+<body class="fixed-top-active dashboard">
+    <!-- WRAPPER -->
+    <div class="wrapper">
+        <!-- TOP NAV BAR -->
+        <nav class="top-bar navbar-fixed-top" role="navigation">
+            <div class="logo-area">
+                <a href="#" id="btn-nav-sidebar-minified" class="btn btn-link btn-nav-sidebar-minified pull-left">
+                    <i class="icon ion-arrow-swap"></i>
+                </a>
+                <a class="btn btn-link btn-off-canvas pull-left"><i class="icon ion-navicon"></i></a>
+                <div class="logo pull-left">
+                    <a href='@Url.Action("Index", "Home")'>
+                        <img src='@Url.Content("~/assets/img/BugTracker-logo.png")' alt="BugTracker Logo" />
+                    </a>
+                </div>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
+            <div class="text-success">@ViewBag.StatusMessage</div>
+            <div class="top-bar-right pull-right">
+                <div class="logged-user">
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+                            <img src="~/assets/img/user.ico" alt="User Image" />
+                            <span class="name">Logged in as @*@Html.Action("BugTracker", "Layout")*@<i class="icon ion-ios-arrow-down"></i></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="/Home/UserProfile">
+                                    <i class="icon ion-ios-person"></i>
+                                    <span class="text">Profile</span>
+                                </a>
+                            </li>
+                            <li>
+                                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <a href="javascript:document.getElementById('logoutForm').submit()">
+                                        <i class="icon ion-log-out"></i>
+                                        <span class="text">Logout</span>
+                                    </a>
+                                }
+                            </li>
+                        </ul>                      
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- END TOP NAV BAR -->
+        <!-- COLUMN LEFT -->
+        <div id="col-left" class="col-left">
+            <div class="main-nav-wrapper">
+                <nav id="main-nav" class="main-nav">
+                    <h3>MAIN</h3>
+                    <ul class="main-menu">
+                        <li>
+                            <a href="/Home/Index" class="submenu"><i class="icon ion-android-home"></i><span class="text">Dashboard</span></a>
+                        </li>
+                        <li>
+                            <a href="/HouseholdAccount/Index" class="submenu"><i class="icon ion-card"></i><span class="text">Accounts</span></a>
+                        </li>
+                        <li>
+                            <a href="/Budgets/Index" class="submenu"><i class="ion-calculator"></i><span class="text">Manage Budgets</span></a>
+                        </li>
+                        <li>
+                            <a href="/Households/Index" class="submenu"><i class="ion-ios-home"></i><span class="text">Change Households</span></a>
+                        </li>
+                        <li>
+                            <a href="/Categories/Index" class="submenu"><i class="ion-ios-pricetags"></i><span class="text">Manage Categories</span></a>
+                        </li>
+                        <li>
+                            <a href="/Invitations/Create" class="submenu"><i class="ion-android-person"></i><span class="text">Invite to Household</span></a>
+                        </li>
+                    </ul>
+                    <h3>PROFILE</h3>
+                    <ul class="main-menu">
+                        <li>
+                            <a href="/Home/UserProfile" class="submenu"><i class="ion-android-person"></i><span class="text">View Profile</span></a>
+                        </li>
+                        <li>
+                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <a href="javascript:document.getElementById('logoutForm').submit()" class="submenu">
+                                    <i class="icon ion-log-out"></i><span class="text">Log Out</span>
+                                </a>
+                            }
+                        </li>
+                    </ul>
+                    <h3>ABOUT</h3>                  
+                    <ul class="main-menu">
+                        <li>
+                            <a href="/Home/About" class="submenu"><i class="ion-information-circled"></i><span class="text">About</span></a>          
+                            <a href="/Home/Contact" class="submenu"><i class="ion-email"></i><span class="text">Contact</span></a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
+        <!-- END COLUMN LEFT -->
+        <!-- COLUMN RIGHT -->
+        <div id="col-right" class="col-right ">
+            <div class="container-fluid primary-content">
+                @RenderBody()
+            </div>
+        </div>
+        <!-- END COLUMN RIGHT -->
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    <!-- END WRAPPER -->
+    <!-- Javascript -->
+    <script src="~/assets/js/jquery/jquery-2.1.0.min.js"></script>
+    <script src="~/assets/js/bootstrap/bootstrap.js"></script>
+    <script src="~/assets/js/plugins/bootstrap-multiselect/bootstrap-multiselect.js"></script>
+    <script src="~/assets/js/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/assets/js/queen-common.js"></script>
+    <script src="~/assets/js/plugins/stat/flot/jquery.flot.min.js"></script>
+    <script src="~/assets/js/plugins/stat/flot/jquery.flot.resize.min.js"></script>
+    <script src="~/assets/js/plugins/stat/flot/jquery.flot.time.min.js"></script>
+    <script src="~/assets/js/plugins/stat/flot/jquery.flot.orderBars.js"></script>
+    <script src="~/assets/js/plugins/stat/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="~/assets/js/plugins/mapael/raphael/raphael-min.js"></script>
+    <script src="~/assets/js/plugins/mapael/jquery.mapael.js"></script>
+    <script src="~/assets/js/plugins/mapael/maps/world_countries.js"></script>
+    <script src="~/assets/js/plugins/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <script src="~/assets/js/plugins/moment/moment.min.js"></script>
+    <script src="~/assets/js/plugins/bootstrap-editable/bootstrap-editable.min.js"></script>
+    <script src="~/assets/js/plugins/jquery-maskedinput/jquery.masked-input.min.js"></script>
+    <script src="~/assets/js/queen-charts.js"></script>
+    <script src="~/assets/js/queen-maps.js"></script>
+    <script src="~/assets/js/queen-elements.js"></script>
+    <script src="~/assets/js/plugins/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/assets/js/plugins/datatable/exts/dataTables.colVis.bootstrap.js"></script>
+    <script src="~/assets/js/plugins/datatable/exts/dataTables.colReorder.min.js"></script>
+    <script src="~/assets/js/plugins/datatable/exts/dataTables.tableTools.min.js"></script>
+    <script src="~/assets/js/plugins/datatable/dataTables.bootstrap.js"></script>
+    <script src="~/assets/js/queen-table.js"></script>
+    <script src="~/Scripts/highcharts/4.2.0/highcharts.js"></script>
+    <script src="~/Scripts/highcharts/4.2.0/modules/data.js"></script>
+    <script src="~/Scripts/highcharts/4.2.0/modules/exporting.js"></script>
+    <script src="~/assets/js/custom-js.js"></script>
 </body>
 </html>
