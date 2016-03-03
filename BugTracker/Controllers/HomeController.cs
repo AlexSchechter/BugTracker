@@ -6,10 +6,13 @@ using System.Web.Mvc;
 
 namespace BugTracker.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public ActionResult Index()
         {
+            if (GetUserInfo() == null)
+                return RedirectToAction("Login", "Account");
+
             return View();
         }
 

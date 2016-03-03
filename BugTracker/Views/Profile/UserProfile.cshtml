@@ -1,0 +1,64 @@
+﻿@using BugTracker.Models
+@using Microsoft.AspNet.Identity
+@model ProfileViewModel
+
+<div class="container-fluid primary-content">
+    <div class="user-profile">
+        <div class="profile-header-background"><img src="~/assets/img/budgeting-background.jpg" alt="Profile Header Background" /></div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="profile-info-left">
+                    <div class="text-center">
+                        <img src="~/assets/img/user.ico" alt="User Picture" class="avatar img-circle" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid primary-content">
+    <div class="widget">
+        <div class="widget-header clearfix">
+            <h3><i class="icon ion-ios-list-outline"></i> <span>YOUR DETAILS</span></h3>
+            <div class="btn-group widget-header-toolbar">
+                <a href="#" title="Expand/Collapse" class="btn btn-link btn-toggle-expand"><i class="icon ion-ios-arrow-up"></i></a>
+            </div>
+        </div>
+        <div class="widget-content">
+            <table id="user" class="table table-bordered table-striped">
+                <tbody>
+                    <tr>
+                        <td>Username</td>
+                        <td>@Model.Username</td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>@Model.Email</td>
+                    </tr>
+                    <tr>
+                        <td>First Name</td>
+                        <td>@Model.FirstName</td>
+                    </tr>
+                    <tr>
+                        <td>Last Name</td>
+                        <td>@Model.LastName</td>
+                    </tr>
+                    <tr>
+                        <td>Role</td>
+                        <td>@Model.Role</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="action-buttons">
+        <div class="row">
+            <div class="col-xs-6">
+                <button class="btn btn-primary btn-block edit-profile-button">Edit Profile</button>
+            </div>
+        </div>
+    </div>
+    <div id="editProfile" hidden>
+        @Html.Action("EditProfile", "Profile", new { profile = Model })
+    </div>
+</div>

@@ -47,7 +47,7 @@
                     <div class="btn-group">
                         <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
                             <img src="~/assets/img/user.ico" alt="User Image" />
-                            <span class="name">Logged in as @*@Html.Action("BugTracker", "Layout")*@<i class="icon ion-ios-arrow-down"></i></span>
+                            <span class="name">Logged in as @Html.Action("BugTracker", "Layout")<i class="icon ion-ios-arrow-down"></i></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             <li>
@@ -100,7 +100,7 @@
                     <h3>PROFILE</h3>
                     <ul class="main-menu">
                         <li>
-                            <a href="/Home/UserProfile" class="submenu"><i class="ion-android-person"></i><span class="text">View Profile</span></a>
+                            <a href="/Profile/UserProfile" class="submenu"><i class="ion-android-person"></i><span class="text">View Profile</span></a>
                         </li>
                         <li>
                             @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
@@ -159,9 +159,6 @@
     <script src="~/assets/js/plugins/datatable/exts/dataTables.tableTools.min.js"></script>
     <script src="~/assets/js/plugins/datatable/dataTables.bootstrap.js"></script>
     <script src="~/assets/js/queen-table.js"></script>
-    <script src="~/Scripts/highcharts/4.2.0/highcharts.js"></script>
-    <script src="~/Scripts/highcharts/4.2.0/modules/data.js"></script>
-    <script src="~/Scripts/highcharts/4.2.0/modules/exporting.js"></script>
     <script src="~/assets/js/custom-js.js"></script>
 </body>
 </html>
