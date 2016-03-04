@@ -74,6 +74,12 @@ namespace BugTracker.Controllers
             {
                 return View(model);
             }
+            var user = await UserManager.FindByEmailAsync(model.Email);
+            if (!await UserManager.IsEmailConfirmedAsync(user.Id))
+            {
+                ViewBag.errorMessage = "You must have a confirmed email to log on.";
+                return View("Error");
+            }
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
@@ -158,16 +164,22 @@ namespace BugTracker.Controllers
                 if (result.Succeeded)
                 {
                     
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     string userId = (await db.Users.FirstAsync(u => u.Email == user.Email)).Id;
                     await UserManager.AddToRoleAsync(userId, "Submitter");
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account",
+                       new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
 
-                    return RedirectToAction("Index", "Home");
+                    await UserManager.SendEmailAsync(user.Id, "Confirm your account",
+                            "Please confirm your account by clicking <a href=\"" + callbackUrl +
+                         "\">here</a>");
+
+                    ViewBag.Message = "Check your email and confirm your account, you must be confirmed before you can log in.";
+
+                    return View("Info");
+                    //return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
             }

@@ -12,7 +12,7 @@ namespace BugTracker.Controllers
     public class ProfileController : BaseController
     {
         //[Authorize(Roles = "Admin")]
-        public ActionResult Index()
+        public ActionResult Index(int? position)
         {
             List<ProfileViewModel> profiles = new List<ProfileViewModel>();
             foreach (ApplicationUser user in db.Users)
@@ -26,6 +26,7 @@ namespace BugTracker.Controllers
                     Role = GetRole(user.Id)
                 });
             }
+            ViewBag.PickPosition = position;
             return View(profiles);
         }
         
@@ -51,6 +52,7 @@ namespace BugTracker.Controllers
         [ChildActionOnly]
         public ActionResult EditProfile(ProfileViewModel profile)
         {
+            profile.UserId = db.Users.FirstOrDefault(u => u.UserName == profile.Username).Id;
             ViewBag.OldRole = profile.Role;
             return View(profile);
         }
@@ -62,7 +64,7 @@ namespace BugTracker.Controllers
             if (profile == null)
                 RedirectToAction("Index", "Home");
 
-            ApplicationUser user = GetUserInfo();         
+            ApplicationUser user = db.Users.Find(profile.UserId);    
             user.UserName = profile.Username;
             user.Email = profile.Email;
             user.FirstName = profile.FirstName;
@@ -70,7 +72,7 @@ namespace BugTracker.Controllers
             await userManager.RemoveFromRoleAsync(user.Id, oldRole.ToString());
             await userManager.AddToRoleAsync(user.Id, profile.Role.ToString());
             await db.SaveChangesAsync();
-            return RedirectToAction("UserProfile");
+            return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
         }
     }
 }

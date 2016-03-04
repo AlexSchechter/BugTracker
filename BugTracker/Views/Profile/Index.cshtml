@@ -42,15 +42,15 @@
                             @Html.DisplayFor(modelItem => item.Role)
                         </td>
                         <td>
-                            <button class = "btn btn-primary btn-xs edit-profile-button">Edit</button>
+                            @Html.ActionLink("Edit", "Index", new { position = Model.IndexOf(item) }, new { @class = "btn btn-primary btn-xs" })
                         </td>                                          
                     </tr>
-                    <caption class="editProfileSection" hidden>
-                        @Html.Action("EditProfile", "Profile", new { profile = item })
-                    </caption>
                 }
             </table>
         </div>
     </div>
-  
+    @if(ViewBag.PickPosition != null)
+    {
+        @Html.Action("EditProfile", "Profile", new { profile = Model[ViewBag.PickPosition] })
+    }
 </div>
