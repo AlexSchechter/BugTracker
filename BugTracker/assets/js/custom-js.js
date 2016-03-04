@@ -1,5 +1,5 @@
 ﻿$(function () {  
     $(".edit-profile-button").click(function () {
-        $("#editProfile").toggle(200);
+        $(".editProfileSection").toggle(200);
     })
 });

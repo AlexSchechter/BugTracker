@@ -1,6 +1,8 @@
 ﻿using BugTracker.Models;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -9,6 +11,24 @@ namespace BugTracker.Controllers
 {
     public class ProfileController : BaseController
     {
+        //[Authorize(Roles = "Admin")]
+        public ActionResult Index()
+        {
+            List<ProfileViewModel> profiles = new List<ProfileViewModel>();
+            foreach (ApplicationUser user in db.Users)
+            {
+                profiles.Add(new ProfileViewModel
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    Username = user.UserName,
+                    Role = GetRole(user.Id)
+                });
+            }
+            return View(profiles);
+        }
+        
         //GET /Profile/UserProfile
         public ActionResult UserProfile()
         {
@@ -16,15 +36,13 @@ namespace BugTracker.Controllers
             if (user == null)
                 return RedirectToAction("Index", "Home");
 
-            string RoleId = userManager.FindById(user.Id).Roles.First().RoleId;
-
             return View(new ProfileViewModel
             {
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Username = user.UserName,
-                Role = (UserRole)Enum.Parse(typeof(UserRole), roleManager.FindById(RoleId).Name)
+                Role = GetRole(user.Id)
             });
         }
 

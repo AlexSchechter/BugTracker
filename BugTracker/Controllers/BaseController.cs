@@ -26,6 +26,19 @@ namespace BugTracker.Controllers
             return db.Users.Find(User.Identity.GetUserId());
         }
 
+        public UserRole GetRole()
+        {
+            string roleId = userManager.FindById(GetUserInfo().Id).Roles.First().RoleId;
+            return (UserRole)Enum.Parse(typeof(UserRole), roleManager.FindById(roleId).Name);
+        }
+
+        public UserRole GetRole(string userId)
+        {
+            string roleId = userManager.FindById(userId).Roles.First().RoleId;
+            return (UserRole)Enum.Parse(typeof(UserRole), roleManager.FindById(roleId).Name);
+        }
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
