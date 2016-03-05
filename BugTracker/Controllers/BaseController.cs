@@ -38,6 +38,16 @@ namespace BugTracker.Controllers
             return (UserRole)Enum.Parse(typeof(UserRole), roleManager.FindById(roleId).Name);
         }
 
+        public IEnumerable<ApplicationUser> GetDevelopers()
+        {
+            return db.Users.ToList().Where(u => userManager.IsInRole(u.Id, "Admin") || userManager.IsInRole(u.Id, "ProjectManager") 
+                        || userManager.IsInRole(u.Id, "Developer"));
+        }
+
+        public IEnumerable<ApplicationUser> GetProjectManagers()
+        {
+            return db.Users.ToList().Where(u => userManager.IsInRole(u.Id, "Admin") || userManager.IsInRole(u.Id, "ProjectManager"));            
+        }
 
         protected override void Dispose(bool disposing)
         {

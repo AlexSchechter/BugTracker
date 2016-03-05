@@ -8,19 +8,19 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BugTracker.Models;
+using Microsoft.AspNet.Identity;
 
 namespace BugTracker.Controllers
 {
     [Authorize(Roles = "Admin, ProjectManager")]
-    public class ProjectsController : Controller
+    public class ProjectsController : BaseController
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
-
+       
         // GET: Projects
         public async Task<ActionResult> Index()
         {
-            var projects = db.Projects.Include(p => p.Manager);
-            return View(await projects.ToListAsync());
+            List<Project> projects = await db.Projects.Include(p => p.Manager).ToListAsync();
+            return View(projects);
         }
 
         // GET: Projects/Details/5
@@ -42,27 +42,42 @@ namespace BugTracker.Controllers
         // GET: Projects/Create
         public ActionResult Create()
         {
-            ViewBag.ManagerId = new SelectList(db.Users, "Id", "FirstName");
-            return View();
+
+            //var help1 = roleManager.FindByNameAsync(UserRole.Admin.ToString()).Result.Users;
+            //var help = new MultiSelectList(roleManager.FindByNameAsync(UserRole.Admin.ToString()).Result.Users, "Id", "Id");
+
+            return View(new ProjectViewModel
+            {
+                Developers = new MultiSelectList(GetDevelopers(), "Id", "Email"),               
+                ProjectManagers = new SelectList(GetProjectManagers(), "Id", "Email")
+            });
         }
 
         // POST: Projects/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,ManagerId,CreationDate")] Project project)
+        public async Task<ActionResult> Create([Bind(Include = "ProjectId,ProjectName,SelectedDevelopers,SelectedProjectManager")] ProjectViewModel model)
         {
             if (ModelState.IsValid)
             {
+                Project project = new Project();
+                project.Name = model.ProjectName;
+                project.ManagerId = model.SelectedProjectManager;
+                foreach (string userId in model.SelectedDevelopers)
+                {
+                    var user = db.Users.Find(userId);
+                    project.Developers.Add(user);
+                }
                 db.Projects.Add(project);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.ManagerId = new SelectList(db.Users, "Id", "FirstName", project.ManagerId);
-            return View(project);
+            return View(model);
         }
+
 
         // GET: Projects/Edit/5
         public async Task<ActionResult> Edit(int? id)
@@ -121,15 +136,6 @@ namespace BugTracker.Controllers
             db.Projects.Remove(project);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

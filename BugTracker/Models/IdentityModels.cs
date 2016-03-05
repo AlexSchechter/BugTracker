@@ -16,7 +16,8 @@ namespace BugTracker.Models
         {
             Comments = new HashSet<Comment>();
             Attachments = new HashSet<Attachment>();
-            Projects = new HashSet<Project>();
+            ManagedProjects = new HashSet<Project>();
+            AssignedProjects = new HashSet<Project>();
             AssignedTickets = new HashSet<Ticket>();
             SubmittedTickets = new HashSet<Ticket>();
         }
@@ -29,7 +30,9 @@ namespace BugTracker.Models
         [InverseProperty("CreatedBy")]
         public virtual ICollection<Attachment> Attachments { get; set; }
         [InverseProperty("Manager")]
-        public virtual ICollection<Project> Projects { get; set; }
+        public virtual ICollection<Project> ManagedProjects { get; set; }
+        [InverseProperty("Developers")]
+        public virtual ICollection<Project> AssignedProjects { get; set; }
         [InverseProperty("Developer")]
         public virtual ICollection<Ticket> AssignedTickets { get; set; }
         [InverseProperty("SubmittedBy")]

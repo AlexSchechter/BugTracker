@@ -8,14 +8,15 @@
         <table class="table table-striped">
             <tr>
                 <th>
-                    @Html.Display("")
+                    Name
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Name)
+                    Project Manager
                 </th>
                 <th>
-                    @Html.Display("Creation Date")
+                    Creation Date
                 </th>
+                <th></th>
                 <th></th>
             </tr>
 
@@ -29,10 +30,10 @@
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.CreationDate)
+                        @item.CreationDate.ToString("d")
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn - primary btn - xs" })
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-xs" })
                     </td>
                     <td>
                         @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-danger btn-xs" })
