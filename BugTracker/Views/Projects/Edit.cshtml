@@ -1,53 +1,52 @@
-﻿@model BugTracker.Models.Project
-
-@{
-    ViewBag.Title = "Edit";
-}
-
-<h2>Edit</h2>
+﻿@model BugTracker.Models.ProjectViewModel
 
 @using (Html.BeginForm())
 {
+    @Html.HiddenFor(model => model.ProjectId)
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Project</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.ProjectName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @if (User.IsInRole("Admin"))
+            {
+                @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @class = "form-control" } })
+            }
+            else
+            {
+                @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+            }
+            @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ManagerId, "ManagerId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ManagerId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ManagerId, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        @Html.Label("Project Manager", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @if (User.IsInRole("Admin"))
+            {
+                @Html.DropDownListFor(model => model.SelectedProjectManagerId, (SelectList)Model.ProjectManagers, "--Select Project Manager--", new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.HiddenFor(model => model.SelectedProjectManagerId)
+                @Html.DropDownListFor(model => model.SelectedProjectManagerId, (SelectList)Model.ProjectManagers, "--Select Project Manager--", new { @class = "form-control", disabled = "disabled" })
+            }
+            @Html.ValidationMessageFor(model => model.SelectedProjectManagerId, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreationDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreationDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreationDate, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        @Html.Label("Assigned Developers", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.ListBoxFor(model => model.SelectedDevelopersId, (MultiSelectList)Model.Developers, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.SelectedDevelopersId, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Submit Changes" class="btn btn-accent2" />
         </div>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>

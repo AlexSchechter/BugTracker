@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -40,13 +41,26 @@ namespace BugTracker.Controllers
 
         public IEnumerable<ApplicationUser> GetDevelopers()
         {
-            return db.Users.ToList().Where(u => userManager.IsInRole(u.Id, "Admin") || userManager.IsInRole(u.Id, "ProjectManager") 
-                        || userManager.IsInRole(u.Id, "Developer"));
+            //List<HouseholdAccount> model = db.Database.SqlQuery<HouseholdAccount>("EXEC GetHouseholdAccountsForHousehold @householdId", new SqlParameter("householdId", household.Id));
+            //string id = db.Users.FirstOrDefault(u => u.Email == "Daeneris@Targaryen.com").Id;
+            //int result = db.Database.SqlQuery<int>("EXEC DeveloperInProject @developerId, @projectId, @result", new SqlParameter("developerId", id), new SqlParameter("projectId", 2), new SqlParameter("result", 0)).First();
+            return db.Database.SqlQuery<ApplicationUser>("EXEC GetDevelopers");
+            //return db.Users.ToList().Where(userManager.IsInRole(u.Id, "Developer"));
         }
 
         public IEnumerable<ApplicationUser> GetProjectManagers()
         {
-            return db.Users.ToList().Where(u => userManager.IsInRole(u.Id, "Admin") || userManager.IsInRole(u.Id, "ProjectManager"));            
+            return db.Users.ToList().Where(u => userManager.IsInRole(u.Id, "ProjectManager"));            
+        }
+
+        public IEnumerable<Project> GetProjectsForDeveloper(string developerId)
+        {
+            return db.Database.SqlQuery<Project>("EXEC ProjectsForDeveloper @developerId", new SqlParameter("developerId", developerId));
+        }
+
+        public IEnumerable<Project> GetProjectsForProjectManager(string managerId)
+        {
+            return db.Database.SqlQuery<Project>("EXEC ProjectsForProjectManager @managerId", new SqlParameter("managerId", managerId));
         }
 
         protected override void Dispose(bool disposing)

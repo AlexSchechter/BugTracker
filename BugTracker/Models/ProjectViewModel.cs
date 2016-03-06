@@ -14,10 +14,10 @@ namespace BugTracker.Models
         public string ProjectName { get; set; }
         [Display(Name = "Assigned Developers")]
         public MultiSelectList Developers { get; set; }
-        public string[] SelectedDevelopers { get; set; }
+        public IEnumerable<string> SelectedDevelopersId { get; set; }
         [Display(Name = "Project Manager")]
         public SelectList ProjectManagers { get; set; }
-        public string SelectedProjectManager { get; set; }
+        public string SelectedProjectManagerId { get; set; }
     }
 
 }

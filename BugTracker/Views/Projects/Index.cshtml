@@ -22,12 +22,12 @@
 
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @String.Concat(item.Manager.FirstName, " ", item.Manager.LastName)
-                    </td>
+                <tr>                
                     <td>
                         @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @String.Concat(item.Manager.FirstName, " ", item.Manager.LastName)
                     </td>
                     <td>
                         @item.CreationDate.ToString("d")
