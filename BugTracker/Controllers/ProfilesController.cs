@@ -9,9 +9,9 @@ using System.Web.Mvc;
 
 namespace BugTracker.Controllers
 {
-    public class ProfileController : BaseController
+    public class ProfilesController : BaseController
     {
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult Index(int? position)
         {
             List<ProfileViewModel> profiles = new List<ProfileViewModel>();

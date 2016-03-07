@@ -45,11 +45,6 @@
     margin-top: 20px;
 }
 
-.partial-form .btn-block.budgets
-{
-    margin-top: 5px;
-}
-
 .profile-info-left .action-buttons
 {
     margin-top: 10px;
@@ -60,6 +55,16 @@
     margin-top: 20px;
 }
 
+/*Projects*/
+.btn-md.btn-projects
+{
+    width: auto;
+}
+
+#projectsWidget
+{
+    margin-top:-15px;
+}
 /*Generic*/
 
 .btn-xs, .btn-md
@@ -67,10 +72,7 @@
     width: 86px;
 }
 
-.btn-xs.budgetItem
-{
-    width: auto;
-}
+
 
 .lead
 {

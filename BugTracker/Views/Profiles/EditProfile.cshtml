@@ -5,10 +5,12 @@
 }
 
 <div id="edit-profile-section" class="widget">
-   
+    <div class="widget-header clearfix">
+        <h3><i class="icon ion-compose"></i> <span>@ViewBag.Title</span></h3>
+    </div> 
     <div class="widget-content">
         <br />
-        @using (Html.BeginForm("EditProfile", "Profile", new { oldRole = ViewBag.OldRole }, FormMethod.Post, new { @class = "form-horizontal partial-form", role = "form" }))
+        @using (Html.BeginForm("EditProfile", "Profiles", new { oldRole = ViewBag.OldRole }, FormMethod.Post, new { @class = "form-horizontal partial-form", role = "form" }))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.UserId)

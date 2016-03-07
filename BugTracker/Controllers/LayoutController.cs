@@ -9,10 +9,16 @@ namespace BugTracker.Controllers
     public class LayoutController : BaseController
     {
         [ChildActionOnly]
-        public ActionResult BugTracker()
+        public ActionResult UserFullName()
         {
-            string Name = String.Concat(GetUserInfo().FirstName, " ", GetUserInfo().LastName);
-            return new ContentResult { Content = Name };
+            //string Name = String.Concat(GetUserInfo().FirstName, " ", GetUserInfo().LastName);
+            
+            return new ContentResult { Content = String.Concat(GetUserInfo().FirstName, " ", GetUserInfo().LastName) };
+        }
+        
+        public ActionResult UserRole()
+        {
+            return new ContentResult { Content = GetRole().ToString() };
         }
 
     }

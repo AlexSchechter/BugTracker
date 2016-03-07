@@ -19,14 +19,16 @@ namespace BugTracker.Controllers
         public async Task<ActionResult> Index()
         {
             string userId = GetUserInfo().Id;
-            switch (GetRole())
+            UserRole role = GetRole();
+            ViewBag.Role = role;
+            switch (role)
             {
                 case UserRole.Admin:
                     return View(await db.Projects.Include(p => p.Manager).ToListAsync());
                 case UserRole.ProjectManager:
-                    return View(GetProjectsForProjectManager(userId));
+                    return View(db.Users.Find(userId).ManagedProjects.ToList());
                 default:
-                    return View(GetProjectsForDeveloper(userId));
+                    return View(db.Users.Find(userId).AssignedProjects.ToList());
             }
  
         }

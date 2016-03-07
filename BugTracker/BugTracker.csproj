@@ -217,7 +217,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LayoutController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\ProfilesController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -491,9 +491,9 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_NotAuthenticatedLayout.cshtml" />
-    <Content Include="Views\Profile\UserProfile.cshtml" />
-    <Content Include="Views\Profile\EditProfile.cshtml" />
-    <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Profiles\UserProfile.cshtml" />
+    <Content Include="Views\Profiles\EditProfile.cshtml" />
+    <Content Include="Views\Profiles\Index.cshtml" />
     <Content Include="Views\Projects\Index.cshtml" />
     <Content Include="Scripts\jquery-2.2.1.min.map" />
     <Content Include="Views\Projects\Create.cshtml" />
