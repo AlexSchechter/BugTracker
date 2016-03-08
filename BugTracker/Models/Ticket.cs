@@ -18,7 +18,7 @@ namespace BugTracker.Models
         }
 
         public int Id { get; set; }
-        public int SubmittedById { get; set; }
+        public string SubmittedById { get; set; }
         public string DeveloperId { get; set; }
         public int ProjectId { get; set; }
         public DateTimeOffset CreationDate { get; set; }

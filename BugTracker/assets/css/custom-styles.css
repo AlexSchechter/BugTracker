@@ -60,6 +60,12 @@
     margin-top: 20px;
 }
 
+/*Tickets*/
+#ticketsButtons
+{
+    margin-bottom: 20px;
+}
+
 /*Projects*/
 .btn-md.btn-projects
 {

@@ -23,8 +23,9 @@ namespace BugTracker.Controllers
         }
 
         protected ApplicationUser GetUserInfo()
-        {
+        {           
             return db.Users.Find(User.Identity.GetUserId());
+
         }
 
         public UserRole GetRole()
@@ -34,8 +35,11 @@ namespace BugTracker.Controllers
         }
 
 
-        public UserRole GetRole(string userId)
+        public UserRole? GetRole(string userId)
         {
+            if (userId == null)
+                return null;
+
             string roleId = userManager.FindById(userId).Roles.First().RoleId;
             return (UserRole)Enum.Parse(typeof(UserRole), roleManager.FindById(roleId).Name);
         }

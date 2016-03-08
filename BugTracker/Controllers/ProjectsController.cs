@@ -25,7 +25,7 @@ namespace BugTracker.Controllers
             {
                 case UserRole.Admin:
                     return View(await db.Projects.Include(p => p.Manager).ToListAsync());
-                case UserRole.ProjectManager:
+                case UserRole.ProjectManager:                   
                     return View(db.Users.Find(userId).ManagedProjects.ToList());
                 default:
                     return View(db.Users.Find(userId).AssignedProjects.ToList());

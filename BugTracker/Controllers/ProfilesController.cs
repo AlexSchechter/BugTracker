@@ -23,7 +23,7 @@ namespace BugTracker.Controllers
                     LastName = user.LastName,
                     Email = user.Email,
                     Username = user.UserName,
-                    Role = GetRole(user.Id)
+                    Role = (UserRole)GetRole(user.Id)
                 });
             }
             ViewBag.PickPosition = position;
@@ -43,7 +43,7 @@ namespace BugTracker.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Username = user.UserName,
-                Role = GetRole(user.Id)
+                Role = (UserRole)GetRole(user.Id)
             });
         }
 

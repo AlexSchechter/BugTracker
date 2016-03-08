@@ -5,6 +5,6 @@
         $('html, body').animate({
             scrollTop: $("#edit-profile-section").offset().top - 60
         }, 200);
-        event.preventDefault();
+        //event.preventDefault();
     })
 });

@@ -10,9 +10,7 @@ namespace BugTracker.Controllers
     {
         [ChildActionOnly]
         public ActionResult UserFullName()
-        {
-            //string Name = String.Concat(GetUserInfo().FirstName, " ", GetUserInfo().LastName);
-            
+        {          
             return new ContentResult { Content = String.Concat(GetUserInfo().FirstName, " ", GetUserInfo().LastName) };
         }
         

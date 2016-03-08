@@ -1,0 +1,95 @@
+﻿@using Microsoft.AspNet.Identity
+@model IEnumerable<BugTracker.Models.Ticket>
+
+<h2>@ViewBag.Header</h2>
+
+<div id="ticketsButtons">
+    @Html.ActionLink("Create New Ticket", "Create", null, new { @class = "btn btn-success" })
+    @if (ViewBag.ownTicketsOnly == false)
+    {
+        @Html.ActionLink("View My Own Tickets", "Index", new { userId = User.Identity.GetUserId() }, new { @class = "btn btn-primary" })
+    }
+    else
+    {
+        @Html.ActionLink("View All Tickets", "Index", null, new { @class = "btn btn-primary" })
+    }
+</div>
+<div class="widget">
+    <div class="widget-content">
+        <div class="table-responsive">
+            <table id="datatable-column-filter" class="table table-sorting table-striped table-hover datatable">
+                <thead>
+                    <tr>
+                        <th>
+                            Title
+                        </th>
+                        <th>
+                            Submitted By
+                        </th>
+                        <th>
+                            Project
+                        </th>
+                        <th>
+                            Project Manager
+                        </th>
+                        <th>
+                            Developer
+                        </th>
+                        <th>
+                            Submitted Date
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Priority
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SubmittedBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Project)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Project.Manager)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Developer)
+                            </td>
+                            <td>
+                                @item.CreationDate.ToString("d")
+                            </td>
+                            <td>
+                                $@Html.DisplayFor(modelItem => item.Type)
+                            </td>
+                            <td>
+                                $@Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Priority)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Details", "Details", new { transactionId = item.Id }, new { @class = "btn btn-success btn-xs" })
+                                @Html.ActionLink("Edit", "Edit", new { Id = item.Id }, new { @class = "btn btn-primary btn-xs" })
+                   
+                            </td>
+                        </tr>
+                    }                  
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

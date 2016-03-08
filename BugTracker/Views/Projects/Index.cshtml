@@ -21,6 +21,9 @@
                     </th>
                     <th>
                         Project Manager
+                    </th>                        
+                    <th>
+                        Assigned Developers
                     </th>
                     <th>
                         Creation Date
@@ -30,13 +33,16 @@
                 </tr>
 
                 @foreach (var item in Model)
-{
+                {
                     <tr>
                         <td>
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td>
                             @String.Concat(item.Manager.FirstName, " ", item.Manager.LastName)
+                        </td>
+                        <td>
+                            @item.Developers.Count
                         </td>
                         <td>
                             @item.CreationDate.ToString("d")
