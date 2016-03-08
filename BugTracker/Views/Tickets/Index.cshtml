@@ -7,7 +7,7 @@
     @Html.ActionLink("Create New Ticket", "Create", null, new { @class = "btn btn-success" })
     @if (ViewBag.ownTicketsOnly == false)
     {
-        @Html.ActionLink("View My Own Tickets", "Index", new { userId = User.Identity.GetUserId() }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("View My Own Tickets", "Index", new { selectedUserId = User.Identity.GetUserId() }, new { @class = "btn btn-primary" })
     }
     else
     {
@@ -58,25 +58,35 @@
                                 @Html.DisplayFor(modelItem => item.Title)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.SubmittedBy)
+                                @Html.ActionLink(String.Concat(item.SubmittedBy.FirstName, " ", item.SubmittedBy.LastName), "Index", new { selectedUserId = item.SubmittedById })
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Project)
+                                @Html.ActionLink(item.Project.Name, "Index", new { projectId = item.ProjectId})
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Project.Manager)
+                                @Html.ActionLink(String.Concat(item.Project.Manager.FirstName, " ", item.Project.Manager.LastName), "Index", new {selectedUserId = item.Project.ManagerId})
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Developer)
-                            </td>
+                            @if (item.Developer != null)
+                            {
+                                <td>
+                                    @Html.ActionLink(String.Concat(item.Developer.FirstName, " ", item.Developer.LastName), "Index", new { selectedUserId = item.DeveloperId})
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    Unassigned
+                                </td>
+
+                            }
                             <td>
                                 @item.CreationDate.ToString("d")
                             </td>
                             <td>
-                                $@Html.DisplayFor(modelItem => item.Type)
+                                @Html.DisplayFor(modelItem => item.Type)
                             </td>
                             <td>
-                                $@Html.DisplayFor(modelItem => item.Status)
+                                @Html.DisplayFor(modelItem => item.Status)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Priority)

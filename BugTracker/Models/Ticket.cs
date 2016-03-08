@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BugTracker.Models
 {
-    public enum TicketStatus { resolved, completed, open }
-    public enum TicketType { bug, enhancement, design, refactoring }
-    public enum TicketPriority { low, standard, high, critical }
+    public enum TicketStatus { Resolved, Unresolved, Completed, Open }
+    public enum TicketType { Bug, Enhancement, Design, Refactoring }
+    public enum TicketPriority { Low, Standard, High, Critical }
 
     public class Ticket
     {     

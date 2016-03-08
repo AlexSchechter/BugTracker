@@ -8,38 +8,45 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BugTracker.Models;
+using Microsoft.AspNet.Identity;
 
 namespace BugTracker.Controllers
 {
+    [Authorize]
     public class TicketsController : BaseController
     {
-        
         // GET: Tickets
-        public async Task<ActionResult> Index(string userId)
+        public async Task<ActionResult> Index(string selectedUserId, int? projectId)
         {
-            ApplicationUser user = db.Users.Find(userId);
-            UserRole? role = (userId == null) ? null : GetRole(userId);
-            ViewBag.ownTicketsOnly = (userId == GetUserInfo().Id) ? true : false;
+            if (projectId != null)
+            {
+                ViewBag.Header = String.Concat("List of Tickets for ", db.Projects.Find(projectId).Name, " Project ");
+                ViewBag.ownTicketsOnly = false;
+                return View(await db.Tickets.Where(t => t.ProjectId == projectId).ToListAsync());
+            }
+
+            ApplicationUser selectedUser = db.Users.Find(selectedUserId);
+            string selectedUserFullName = (selectedUserId == null)? null: String.Concat(selectedUser.FirstName, " ", selectedUser.LastName);
+            UserRole? role = (selectedUserId == null) ? null : GetRole(selectedUserId);
+            ViewBag.ownTicketsOnly = (selectedUserId == User.Identity.GetUserId()) ? true : false;
             switch (role)
             {
                 case UserRole.Admin:
                 case UserRole.Submitter:
-                    ViewBag.Header = String.Concat("List of Tickets Submitted by ", user.UserName.ToUpper());
-                    return View(await db.Tickets.Where(t => t.SubmittedById == userId).ToListAsync());
+                    ViewBag.Header = String.Concat("List of Tickets Submitted by ", selectedUserFullName);
+                    return View(await db.Tickets.Where(t => t.SubmittedById == selectedUserId).ToListAsync());
                 case UserRole.ProjectManager:
-                    ViewBag.Header = String.Concat("List of Tickets Managed by ", user.UserName.ToUpper());
-                    return View(await db.Projects.Where(p => p.ManagerId == userId).Select(p => p.Tickets).ToListAsync());
+                    ViewBag.Header = String.Concat("List of Tickets Managed by ", selectedUserFullName);
+                    var projects = db.Projects;
+                    return View(await db.Tickets.Where(t => projects.Select(p => p.ManagerId).Contains(selectedUserId)).ToListAsync());
                 case UserRole.Developer:
-                    ViewBag.Header = String.Concat("List of Tickets Assigned to ", user.UserName.ToUpper());
-                    return View(await db.Tickets.Where(t => t.DeveloperId == userId).ToListAsync());
+                    ViewBag.Header = String.Concat("List of Tickets Assigned to ", selectedUserFullName);
+                    return View(await db.Tickets.Where(t => t.DeveloperId == selectedUserId).ToListAsync());
                 default:
                     ViewBag.Header = "List of all tickets";
                     return View(await db.Tickets.ToListAsync());
 
             }
-
-            var tickets = db.Tickets.Include(t => t.Developer).Include(t => t.Project);
-            return View(await tickets.ToListAsync());
         }
 
         // GET: Tickets/Details/5
@@ -70,10 +77,14 @@ namespace BugTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,SubmittedById,DeveloperId,ProjectId,CreationDate,Title,Description,Status,Type,Priority")] Ticket ticket)
+        public async Task<ActionResult> Create([Bind(Include = "ProjectId,Title,Description,Type,Priority")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
+                
+                ticket.CreationDate = DateTime.Now;
+                ticket.Status = TicketStatus.Open;
+                ticket.SubmittedById = User.Identity.GetUserId();
                 db.Tickets.Add(ticket);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");

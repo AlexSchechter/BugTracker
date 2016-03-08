@@ -73,6 +73,10 @@ namespace BugTracker.Controllers
             return db.Database.SqlQuery<Project>("EXEC ProjectsForProjectManager @managerId", new SqlParameter("managerId", managerId));
         }
 
+        public IEnumerable<Ticket> GetTicketsFroProjectManager(string managerId)
+        {
+            return db.Database.SqlQuery<Ticket>("EXEC TicketsForProjectManager @managerId", new SqlParameter("managerId", managerId));
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
