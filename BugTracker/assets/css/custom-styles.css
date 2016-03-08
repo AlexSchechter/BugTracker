@@ -1,7 +1,8 @@
 ﻿/*Home page*/
 
 
-/* NonAuthenticatedLayout page */
+
+/* NonAuthenticated */
 #site-logo 
 {
     display: block;
@@ -15,6 +16,10 @@
     height: auto;
 }
 
+.container-fluid.primary-content.not-authenticated
+{
+    margin-top: 0px;
+}
 /* UserProfile page */
 .avatar 
 {

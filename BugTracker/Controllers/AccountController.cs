@@ -178,8 +178,8 @@ namespace BugTracker.Controllers
                     //     "\">here</a>");
 
                     string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account");
-                    ViewBag.Message = "Check your email and confirm your account, you must be confirmed before you can log in.";
-
+                    ViewBag.Title = "Thank you for Signing Up!";
+                    ViewBag.Message = "Check your email and click on the link provided to confirm your account, you must be confirmed before you can log in.";
                     return View("Info");
                     //return RedirectToAction("Index", "Home");
                 }
