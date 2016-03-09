@@ -132,7 +132,7 @@ namespace BugTracker.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.DeveloperId = new SelectList(db.Users, "Id", "FirstName", ticket.DeveloperId);
+            ViewBag.DeveloperId = new SelectList(GetDevelopersForProject(ticket.ProjectId), "Id", "FirstName", ticket.DeveloperId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
             return View(ticket);
         }
