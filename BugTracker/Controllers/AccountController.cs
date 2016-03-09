@@ -166,8 +166,7 @@ namespace BugTracker.Controllers
                 {
 
                     //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    //string userId = (await db.Users.FirstAsync(u => u.Email == user.Email)).Id;
-                    //await UserManager.AddToRoleAsync(userId, "Submitter");
+
 
                     //string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     //var callbackUrl = Url.Action("ConfirmEmail", "Account",
@@ -177,11 +176,12 @@ namespace BugTracker.Controllers
                     //        "Please confirm your account by clicking <a href=\"" + callbackUrl +
                     //     "\">here</a>");
 
+                    string userId = (await db.Users.FirstAsync(u => u.Email == user.Email)).Id;
+                    await UserManager.AddToRoleAsync(userId, "Submitter");
                     string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account");
                     ViewBag.Title = "Thank you for Signing Up!";
                     ViewBag.Message = "Check your email and click on the link provided to confirm your account, you must be confirmed before you can log in.";
                     return View("Info");
-                    //return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
             }

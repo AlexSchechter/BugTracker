@@ -83,7 +83,10 @@
     width: 86px;
 }
 
-
+textarea
+{
+    width: 100%;
+}
 
 .lead
 {

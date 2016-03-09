@@ -51,9 +51,7 @@ namespace BugTracker.Controllers
         }
 
         public IEnumerable<ApplicationUser> GetDevelopers()
-        {
-            string id = db.Users.FirstOrDefault(u => u.Email == "Daeneris@Targaryen.com").Id;
-            bool isTrue = db.Database.SqlQuery<bool>("EXEC DeveloperInProject @developerId, @projectId", new SqlParameter("developerId", id), new SqlParameter("projectId", 2)).First();
+        {           
             return db.Database.SqlQuery<ApplicationUser>("EXEC GetDevelopers");
             //return db.Users.ToList().Where(userManager.IsInRole(u.Id, "Developer"));
         }
@@ -73,10 +71,16 @@ namespace BugTracker.Controllers
             return db.Database.SqlQuery<Project>("EXEC ProjectsForProjectManager @managerId", new SqlParameter("managerId", managerId));
         }
 
-        public IEnumerable<Ticket> GetTicketsFroProjectManager(string managerId)
+        public IEnumerable<Ticket> GetTicketsForProjectManager(string managerId)
         {
             return db.Database.SqlQuery<Ticket>("EXEC TicketsForProjectManager @managerId", new SqlParameter("managerId", managerId));
         }
+
+        public IEnumerable<ApplicationUser> GetDevelopersForProject(int projectId)
+        {
+            return db.Database.SqlQuery<ApplicationUser>("EXEC GetDevelopersForProject @projectId", new SqlParameter("projectId", projectId));
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
