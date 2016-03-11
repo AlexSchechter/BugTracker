@@ -10,6 +10,7 @@ Web.config
 Startup.Auth.cs
 Configuration.cs
 IdentityConfig.cs
+bin
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

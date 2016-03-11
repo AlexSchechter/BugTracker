@@ -81,9 +81,12 @@
                         <li>
                             <a href="/Home/Index" class="submenu"><i class="icon ion-android-home"></i><span class="text">Dashboard</span></a>
                         </li>
-                        <li>
-                            <a href="/Projects/Index" class="submenu"><i class="icon ion-filing"></i><span class="text">Projects</span></a>
-                        </li>
+                        @if (Html.Action("UserRole", "Layout").ToString() != "Submitter")
+                        {
+                            <li>
+                                <a href="/Projects/Index" class="submenu"><i class="icon ion-filing"></i><span class="text">Projects</span></a>
+                            </li>
+                        }
                         <li>
                             <a href="/Tickets/Index" class="submenu"><i class="icon ion-ios-paper"></i><span class="text">Tickets</span></a>
                         </li>

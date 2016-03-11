@@ -5,7 +5,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using BugTracker.Models;
 using Microsoft.AspNet.Identity;
@@ -57,17 +56,22 @@ namespace BugTracker.Controllers
         }
 
         // GET: Tickets/Details/5
-        public async Task<ActionResult> Details(int? id)
+        public async Task<ActionResult> Details(int? ticketId)
         {
-            if (id == null)
+            if (ticketId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Ticket ticket = await db.Tickets.FindAsync(id);
+            Ticket ticket = await db.Tickets.FindAsync(ticketId);
             if (ticket == null)
             {
                 return HttpNotFound();
             }
+            ApplicationUser user = GetUserInfo();
+            UserRole userRole = GetRole();
+            ViewBag.Role = userRole;
+            ViewBag.CanComment = CanCommentOrAttach(ticket);
+
             return View(ticket);
         }
 
@@ -88,7 +92,7 @@ namespace BugTracker.Controllers
             if (ModelState.IsValid)
             {
                 
-                ticket.CreationDate = DateTime.Now;
+                ticket.CreationDate = DateTimeOffset.Now;
                 ticket.Status = TicketStatus.Open;
                 ticket.SubmittedById = User.Identity.GetUserId();
                 db.Tickets.Add(ticket);

@@ -76,7 +76,7 @@ namespace BugTracker.Controllers
                 Project project = new Project();
                 project.Name = model.ProjectName;
                 project.ManagerId = model.SelectedProjectManagerId;
-                project.CreationDate = DateTime.Now;
+                project.CreationDate = DateTimeOffset.Now;
                 foreach (string developerId in model.SelectedDevelopersId)
                 {
                     project.Developers.Add(db.Users.Find(developerId));

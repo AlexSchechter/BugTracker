@@ -29,10 +29,7 @@
                         </th>
                         <th>
                             Developer
-                        </th>
-                        <th>
-                            Submitted Date
-                        </th>
+                        </th>                      
                         <th>
                             Type
                         </th>
@@ -86,13 +83,7 @@
                                 @Html.DisplayFor(modelItem => item.Status)
                             </td>
                             <td>
-                                @Html.ActionLink("Details", "Details", new { transactionId = item.Id }, new { @class = "btn btn-success btn-xs" })
-                                @if (ViewBag.Role == UserRole.Admin || (ViewBag.Role == UserRole.Developer && item.DeveloperId == ViewBag.UserId)
-                                    || (ViewBag.Role == UserRole.ProjectManager && item.Project.ManagerId == ViewBag.UserId ))
-                                {
-                                    @Html.ActionLink("Edit", "Edit", new { TicketId = item.Id }, new { @class = "btn btn-primary btn-xs" })      
-                                }
-                                   
+                                @Html.ActionLink("Details", "Details", new { ticketId = item.Id }, new { @class = "btn btn-danger btn-xs" })                                                              
                             </td>
                         </tr>
                     }                  

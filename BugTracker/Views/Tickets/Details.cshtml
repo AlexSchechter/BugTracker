@@ -1,90 +1,95 @@
-﻿@model BugTracker.Models.Ticket
+﻿@using BugTracker.Models
+@model Ticket
 
-@{
-    ViewBag.Title = "Details";
-}
+<div class="container-fluid primary-content">
+    <div class="primary-content-heading clearfix">
+        <br />
+        <a href="~/Tickets/Index" class="btn btn-primary btn-md btn-long">Back to All Tickets</a>
+        @if (ViewBag.Role != UserRole.Submitter)
+        {
+            @Html.ActionLink("Edit Ticket", "Edit", new { ticketId = @Model.Id }, new { @class = "btn btn-warning btn-md btn-long" });
+        }
+    </div>
+    <div class="widget">
+        <div class="widget-header clearfix">
+            <h3><i class="icon ion-ios-list-outline"></i> <span>Ticket Details</span></h3>
+            <div class="btn-group widget-header-toolbar">
+                <a href="#" title="Expand/Collapse" class="btn btn-link btn-toggle-expand"><i class="icon ion-ios-arrow-up"></i></a>
+            </div>
+        </div>
+        <div class="widget-content">
+            <table id="user" class="table table-bordered table-striped">
+                <tbody>
+                    <tr>
+                        <td>Title</td>
+                        <td>@Model.Title</td>
+                    </tr>
+                    <tr>
+                        <td>Details</td>
+                        <td>@Model.Description</td>
+                    </tr>                  
+                    <tr>
+                        <td>Submitted By</td>
+                        <td>@String.Concat(Model.SubmittedBy.FirstName, " ", Model.SubmittedBy.LastName)</td>
+                    </tr>
+                    <tr>
+                        <td>Project</td>
+                        <td>@Model.Project.Name</td>
+                    </tr>
+                    <tr>
+                        <td>Project Manager</td>
+                        <td>@String.Concat(Model.Project.Manager.FirstName, " ", Model.Project.Manager.LastName)</td>
+                    </tr>
+                    <tr>
+                        <td>Developer</td>
+                    @if (Model.Developer != null)
+                    {
 
-<h2>Details</h2>
+                        <td>@String.Concat(Model.Developer.FirstName, " ", Model.Developer.LastName)</td>
 
-<div>
-    <h4>Ticket</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Developer.FirstName)
-        </dt>
+                    }
+                    else
+                    {
+                        <td>
+                            Unassigned
+                        </td>
+                    }
 
-        <dd>
-            @Html.DisplayFor(model => model.Developer.FirstName)
-        </dd>
+                    </tr>
+                    <tr>
+                        <td>Submitted Date</td>
+                        <td>@Model.CreationDate.ToString("d")</td>
+                    </tr>
+                    <tr>
+                        <td>Type</td>
+                        <td>@Model.Type</td>
+                    </tr>
+                    <tr>
+                        <td>Priority</td>
+                        <td>@Model.Priority</td>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td>@Model.Status</td>
+                    </tr>
+                    <tr>
+                        <td>Comments</td>
+                        <td>@Model.Comments.Count</td>
+                    </tr>
+                    <tr>
+                        <td>Attachements</td>
+                        <td>@Model.Attachments.Count</td>
+                    </tr>                
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Project.Name)
-        </dt>
+    @if (ViewBag.CanComment)
+    {
+        @Html.ActionLink("Add Comment", "Create", "Comments", new { ticketId = @Model.Id }, new { @class = "btn btn-warning btn-md btn-long" });
+    }
+    @Html.ActionLink("View Comments", "Index", "Comments", new { ticketId = @Model.Id }, new { @class = "btn btn-warning btn-md btn-long" })
 
-        <dd>
-            @Html.DisplayFor(model => model.Project.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SubmittedById)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SubmittedById)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreationDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreationDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Type)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Type)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Priority)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Priority)
-        </dd>
-
-    </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
