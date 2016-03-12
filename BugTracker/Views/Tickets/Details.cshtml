@@ -87,9 +87,9 @@
 
     @if (ViewBag.CanComment)
     {
-        @Html.ActionLink("Add Comment", "Create", "Comments", new { ticketId = @Model.Id }, new { @class = "btn btn-warning btn-md btn-long" });
+        @Html.ActionLink("Add Comment", "Create", "Comments", new { ticketId = @Model.Id }, new { @class = "btn btn-success btn-md btn-long" });
     }
-    @Html.ActionLink("View Comments", "Index", "Comments", new { ticketId = @Model.Id }, new { @class = "btn btn-warning btn-md btn-long" })
+    @Html.ActionLink("View Comments", "Index", "Comments", new { ticketId = @Model.Id }, new { @class = "btn btn-danger btn-md btn-long" })
 
 </div>
 

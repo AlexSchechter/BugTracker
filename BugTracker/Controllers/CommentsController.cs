@@ -13,18 +13,24 @@ namespace BugTracker.Controllers
 {
     [Authorize]
     public class CommentsController : BaseController
-    {
-        
+    {      
         // GET: Comments
         public async Task<ActionResult> Index(int? ticketId)
         {
             if (ticketId == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            
-            if (!CanCommentOrAttach(await db.Tickets.FindAsync(ticketId)))
+
+            Ticket ticket = await db.Tickets.FindAsync(ticketId);
+            if (!CanCommentOrAttach(ticket))
                 return RedirectToAction("Index", new { ticketId = ticketId });
 
-            return View(await db.Comments.Include(c => c.CreatedBy).Include(c => c.Ticket).ToListAsync());
+            ViewBag.Ticket = ticket.Title;
+            ViewBag.Project = ticket.Project.Name;
+            ViewBag.TicketId = ticketId;
+            ViewBag.CanCreate = CanCommentOrAttach(ticket);
+
+            return View(await db.Comments.Where(c => c.TicketId == ticketId).Include(c => c.CreatedBy).Include(c => c.Ticket)
+                .OrderByDescending(c => c.Date).ToListAsync());
         }
 
         // GET: Comments/Create
@@ -33,8 +39,13 @@ namespace BugTracker.Controllers
             if (ticketId == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            if (!CanCommentOrAttach(await db.Tickets.FindAsync(ticketId)))
+            Ticket ticket = await db.Tickets.FindAsync(ticketId);
+
+            if (!CanCommentOrAttach(ticket))
                 return RedirectToAction("Details", "Tickets", new { ticketId = ticketId });
+
+            ViewBag.TicketTitle = ticket.Title;
+            ViewBag.Project = ticket.Project.Name;
 
             return View(new Comment { TicketId = (int)ticketId });
         }

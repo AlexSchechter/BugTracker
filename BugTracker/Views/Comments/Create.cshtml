@@ -3,9 +3,7 @@
     <br />
     <div class="widget">
         <div class="widget-header clearfix">
-            <h3><i class="icon ion-compose"></i> <span>Create New Comment for @Model.Ticket.Title Ticket entered by 
-                @String.Concat(Model.Ticket.SubmittedBy.FirstName, " ", Model.Ticket.SubmittedBy.LastName)
-                for the @Model.Ticket.Project Project</span></h3>
+            <h3><i class="icon ion-compose"></i> <span>Create New Comment for the @ViewBag.TicketTitle Ticket in the @ViewBag.Project Project</span></h3>
         </div>
         <div class="widget-content">
             @using (Html.BeginForm())

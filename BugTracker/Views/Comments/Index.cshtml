@@ -1,51 +1,21 @@
 ﻿@model IEnumerable<BugTracker.Models.Comment>
 
-@{
-    ViewBag.Title = "Index";
+<h3><i class="icon ion-ios-list-outline"></i> <span>Comments for the @ViewBag.Ticket Ticket in @ViewBag.Project</span></h3>
+@Html.ActionLink("Back to Ticket", "Details", "Tickets", new { ticketId = ViewBag.ticketId }, new { @class = "btn btn-primary btn-md btn-long" })
+@Html.ActionLink("Add Comment", "Create", new { ticketId = ViewBag.ticketId }, new { @class = "btn btn-warning btn-md btn-long" })
+<br />
+<br />
+@foreach (var item in Model)
+{
+    <div class="container-fluid primary-content">
+        <div class="widget">
+            <div class="widget-header clearfix">
+                <h3><i class="icon ion-information-circled"></i> <span>Comment entered on @item.Date.ToString("g") 
+                    by @String.Concat(item.CreatedBy.FirstName, " ", item.CreatedBy.LastName) </span></h3>
+            </div>
+            <div class="widget-content">
+                <div class="h5">@item.Body</div>
+            </div>
+        </div>
+    </div>
 }
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedBy.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Ticket.SubmittedById)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Body)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Date)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedBy.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ticket.SubmittedById)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Body)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
-</table>
