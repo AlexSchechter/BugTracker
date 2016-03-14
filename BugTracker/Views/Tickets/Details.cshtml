@@ -5,7 +5,7 @@
     <div class="primary-content-heading clearfix">
         <br />
         <a href="~/Tickets/Index" class="btn btn-primary btn-md btn-long">Back to All Tickets</a>
-        @if (ViewBag.Role != UserRole.Submitter)
+        @if (ViewBag.CanCreate)
         {
             @Html.ActionLink("Edit Ticket", "Edit", new { ticketId = @Model.Id }, new { @class = "btn btn-warning btn-md btn-long" });
         }
@@ -84,12 +84,68 @@
             </table>
         </div>
     </div>
-
-    @if (ViewBag.CanComment)
+    @if (ViewBag.CanCreate)
     {
-        @Html.ActionLink("Add Comment", "Create", "Comments", new { ticketId = @Model.Id }, new { @class = "btn btn-success btn-md btn-long" });
+        using (Html.BeginForm("Create", "Attachments", new { ticketId = Model.Id }, FormMethod.Post,  new { @class = "form-horizontal", role = "form", id = "newHousehold" , enctype = "Multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="description" placeholder="Attachement Name">
+                    <input name="fileUpload" type="file" class="form-control" id="fileUpload" />
+                    <input type="submit" value="Create" class="btn btn-primary btn-md" />                
+                    @*<input name="fileUpload" type="file" class="form-control" id="fileUpload" /><input class="btn btn-success" type="file" id="fileUpload"><span class="icon ion-compose"> Upload</span> />*@
+                    @*<span class="input-group-btn"><button class="btn btn-success" type="submit"><span class="icon ion-compose"> Upload</span></button></span>*@
+                    @*<input name="fileUpload" type="file" class="form-control" id="fileUpload" />*@
+                </div>
+            </div>            
+        }
+
     }
-    @Html.ActionLink("View Comments", "Index", "Comments", new { ticketId = @Model.Id }, new { @class = "btn btn-danger btn-md btn-long" })
+    @Html.ActionLink("View Attachments", "Index", "Attachments", new { ticketId = Model.Id }, new { @class = "btn btn-warning btn-md btn-long" })
+    <br />
+    <br />
+
+    @if (ViewBag.CanCreate)
+    {
+        @Html.ActionLink("Add Comment", "Create", "Comments", new { ticketId = Model.Id }, new { @class = "btn btn-success btn-md btn-long" });
+    }
+    @Html.ActionLink("View Comments", "Index", "Comments", new { ticketId = Model.Id }, new { @class = "btn btn-danger btn-md btn-long" })
 
 </div>
 
+<div class="table table-striped files" id="previews">
+
+    <div id="template" class="file-row">
+        <!-- This is used as the file preview template -->
+        <div>
+            <span class="preview"><img data-dz-thumbnail /></span>
+        </div>
+        <div>
+            <p class="name" data-dz-name></p>
+            <strong class="error text-danger" data-dz-errormessage></strong>
+        </div>
+        <div>
+            <p class="size" data-dz-size></p>
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-primary start">
+                <i class="glyphicon glyphicon-upload"></i>
+                <span>Start</span>
+            </button>
+            <button data-dz-remove class="btn btn-warning cancel">
+                <i class="glyphicon glyphicon-ban-circle"></i>
+                <span>Cancel</span>
+            </button>
+            <button data-dz-remove class="btn btn-danger delete">
+                <i class="glyphicon glyphicon-trash"></i>
+                <span>Delete</span>
+            </button>
+        </div>
+    </div>
+
+</div>

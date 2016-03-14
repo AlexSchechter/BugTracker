@@ -70,7 +70,7 @@ namespace BugTracker.Controllers
             ApplicationUser user = GetUserInfo();
             UserRole userRole = GetRole();
             ViewBag.Role = userRole;
-            ViewBag.CanComment = CanCommentOrAttach(ticket);
+            ViewBag.CanCreate = CanCommentOrAttach(ticket);
 
             return View(ticket);
         }

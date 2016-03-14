@@ -1,0 +1,50 @@
+﻿@model IEnumerable<BugTracker.Models.Attachment>
+
+<div class="container-fluid primary-content">
+    <br />
+    <div class="primary-content-heading clearfix">
+        <h3><i class="icon ion-ios-list-outline"></i> <span>Attachments for the @ViewBag.Ticket Ticket in the @ViewBag.Project Project</span></h3>
+        @Html.ActionLink("Back to Ticket", "Details", "Tickets", new { ticketId = ViewBag.ticketId }, new { @class = "btn btn-primary btn-md btn-long" })
+        @if (ViewBag.CanCreate)
+        {
+            Html.Display("Upload Document");
+        }
+    </div>
+        <div class="widget">          
+            <div class="widget-content">
+                <table class="table table-striped">
+                    <tr>
+                        <th>
+                            Attached By
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th></th>
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @String.Concat(item.CreatedBy.FirstName, " ", item.CreatedBy.LastName)
+                            </td>
+                            <td>
+                                @item.Date.ToString("d")
+                            </td>
+                            <td>
+                                @item.Description
+                            </td>
+                            <td>
+                                <a href="@item.Url" download class="btn btn-warning btn-xs">Download</a>
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+
+        </div>
+    </div>

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using BugTracker.Models;
 
@@ -21,9 +19,6 @@ namespace BugTracker.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             Ticket ticket = await db.Tickets.FindAsync(ticketId);
-            if (!CanCommentOrAttach(ticket))
-                return RedirectToAction("Index", new { ticketId = ticketId });
-
             ViewBag.Ticket = ticket.Title;
             ViewBag.Project = ticket.Project.Name;
             ViewBag.TicketId = ticketId;
@@ -50,9 +45,7 @@ namespace BugTracker.Controllers
             return View(new Comment { TicketId = (int)ticketId });
         }
 
-        // POST: Comments/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Comments/Create      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Body,TicketId")] Comment comment)

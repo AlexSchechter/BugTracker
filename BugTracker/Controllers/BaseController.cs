@@ -35,6 +35,14 @@ namespace BugTracker.Controllers
                 || ticket.SubmittedById == userId;
         }
 
+        protected bool CanCommentOrAttach(int ticketId)
+        {
+            Ticket ticket = db.Tickets.Find(ticketId);
+            string userId = User.Identity.GetUserId();
+            return GetRole() == UserRole.Admin || ticket.Project.ManagerId == userId || ticket.DeveloperId == userId
+                || ticket.SubmittedById == userId;
+        }
+
         public UserRole GetRole()
         {
             string roleId = userManager.FindById(GetUserInfo().Id).Roles.First().RoleId;

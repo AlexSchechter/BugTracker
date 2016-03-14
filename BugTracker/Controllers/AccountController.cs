@@ -66,21 +66,20 @@ namespace BugTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (!ModelState.IsValid)
-            {
+            if (!ModelState.IsValid)          
                 return View(model);
-            }
-            var user = await UserManager.FindByEmailAsync(model.Email);
+            
+            ApplicationUser user = await UserManager.FindByEmailAsync(model.Email);
             if (!await UserManager.IsEmailConfirmedAsync(user.Id))
             {
                 string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account-Resend");
-                ViewBag.errorMessage = "You must have a confirmed email to log on.";
+                ViewBag.errorMessage = "You must have a confirmed email to log on - the email confirmation token has been resent to your email account.";
                 return View("Error");
             }
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -160,18 +159,6 @@ namespace BugTracker.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-
-                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-
-
-                    //string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    //var callbackUrl = Url.Action("ConfirmEmail", "Account",
-                    //   new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-
-                    //await UserManager.SendEmailAsync(user.Id, "Confirm your account",
-                    //        "Please confirm your account by clicking <a href=\"" + callbackUrl +
-                    //     "\">here</a>");
-
                     string userId = (await db.Users.FirstAsync(u => u.Email == user.Email)).Id;
                     await UserManager.AddToRoleAsync(userId, "Submitter");
                     string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account");
@@ -227,7 +214,6 @@ namespace BugTracker.Controllers
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                 await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
-
             }
 
             // If we got this far, something failed, redisplay form
