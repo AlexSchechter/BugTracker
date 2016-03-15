@@ -59,14 +59,12 @@ namespace BugTracker.Controllers
         public async Task<ActionResult> Details(int? ticketId)
         {
             if (ticketId == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+                return RedirectToAction("Index");
+            
             Ticket ticket = await db.Tickets.FindAsync(ticketId);
-            if (ticket == null)
-            {
+            if (ticket == null)          
                 return HttpNotFound();
-            }
+            
             ApplicationUser user = GetUserInfo();
             UserRole userRole = GetRole();
             ViewBag.Role = userRole;
@@ -165,31 +163,15 @@ namespace BugTracker.Controllers
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", updatedTicket.ProjectId);
             return View(updatedTicket);
         }
-
-        // GET: Tickets/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+     
+        //GET: Tickets/Changes
+        public async Task<ActionResult> Changes (int? ticketId)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Ticket ticket = await db.Tickets.FindAsync(id);
-            if (ticket == null)
-            {
-                return HttpNotFound();
-            }
-            return View(ticket);
-        }
+            if (ticketId == null)
+                return RedirectToAction("Index");
 
-        // POST: Tickets/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
-        {
-            Ticket ticket = await db.Tickets.FindAsync(id);
-            db.Tickets.Remove(ticket);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            ViewBag.Ticket = (await db.Tickets.FindAsync((int)ticketId)).Title;        
+            return View(await db.TicketChanges.Where(t => t.TicketId == ticketId).OrderByDescending(t => t.Date).ToListAsync());
         }
 
         protected override void Dispose(bool disposing)

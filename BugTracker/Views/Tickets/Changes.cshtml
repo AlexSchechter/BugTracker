@@ -1,0 +1,160 @@
+﻿@model IEnumerable<BugTracker.Models.TicketChange>
+
+<h3><i class="icon ion-ios-list-outline"></i> <span>Changes History for the @ViewBag.Ticket Ticket </span></h3>
+@Html.ActionLink("Back to Ticket", "Details", "Tickets", new { ticketId = ViewBag.ticketId }, new { @class = "btn btn-primary btn-md btn-long" })
+<br />
+<br />
+@foreach (var item in Model)
+{
+    <div class="container-fluid primary-content">
+        <div class="widget">
+            <div class="widget-header clearfix">
+                <h3>
+                    <i class="icon ion-information-circled"></i> <span>  
+                        Changed on @item.Date.ToString("d") by @String.Concat(item.ChangedBy.FirstName, " ", item.ChangedBy.LastName) 
+                    </span>
+                </h3>
+            </div>
+            <div class="widget-content">
+                <table class="table table-striped">
+                    <tr>
+                        <th>
+                            
+                        </th>
+                        <th>
+                            @if (item.NewDeveloperId != item.OldDeveloperId)
+                            {
+                                <div class="text-danger"><b>Developer</b></div>;
+                            }
+                            else
+                            {
+                                <div>Developer</div>
+                            }
+                        </th>
+                        <th>
+                            @if (item.NewType != item.OldType)
+                            {
+                                <div class="text-danger"><b>Type</b></div>
+                            }
+                            else
+                            {
+                                <div>Type</div>
+                            }
+
+                        </th>
+                        <th>
+                            @if (item.NewPriority != item.OldPriority)
+                            {
+                                <div class="text-danger"><b>Priority</b></div>
+                            }
+                            else
+                            {
+                                <div>Priority</div>;
+                            }
+                        </th>
+                        <th>
+                            @if (item.NewStatus != item.OldStatus)
+                            {
+                                <div class="text-danger"><b>Status</b></div>
+                            }
+                            else
+                            {
+                                <div>Status</div>
+                            }
+                        </th>                      
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Before</b>
+                        </td>
+                        <td>
+                            @if (item.NewDeveloperId != item.OldDeveloperId)
+                            {
+                                <div class="text-danger"><b>@String.Concat(item.OldDeveloper.FirstName, " ", item.OldDeveloper.LastName)</b></div>;
+                            }
+                            else
+                            {
+                                <div>@String.Concat(item.OldDeveloper.FirstName, " ", item.OldDeveloper.LastName)</div>
+                            }
+                        </td>
+                        <td>
+                            @if (item.NewType != item.OldType)
+                            {
+                                <div class="text-danger"><b>@item.OldType</b></div>
+                            }
+                            else
+                            {
+                                <div>@item.OldType.ToString()</div>
+                            }
+                        </td>
+                        <td>
+                            @if (item.NewPriority != item.OldPriority)
+                            {
+                                <div class="text-danger"><b>@item.OldPriority</b></div>;
+                            }
+                            else
+                            {
+                                <div>@item.OldPriority.ToString()</div>
+                            }
+                        </td>
+                        <td>
+                            @if (item.NewStatus != item.OldStatus)
+                            {
+                                <div class="text-danger"><b>@item.OldStatus</b></div>;
+                            }
+                            else
+                            {
+                                <div>@item.OldStatus.ToString()</div>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Changed to</b>
+                        </td>
+                        <td>
+                            @if (item.NewDeveloperId != item.OldDeveloperId)
+                            {
+                                <div class="text-danger"><b>@String.Concat(item.NewDeveloper.FirstName, " ", item.NewDeveloper.LastName)</b></div>;
+                            }
+                            else
+                            {
+                                <div>@String.Concat(item.NewDeveloper.FirstName, " ", item.NewDeveloper.LastName)</div>
+                            }
+                        </td>
+                        <td>
+                            @if (item.NewType != item.OldType)
+                            {
+                                <div class="text-danger"><b>@item.NewType</b></div>;
+                            }
+                            else
+                            {
+                                <div>@item.NewType.ToString()</div>
+                            }
+                        </td>
+                        <td>
+                            @if (item.NewPriority != item.OldPriority)
+                            {
+                                <div class="text-danger"><b>@item.NewPriority</b></div>;
+                            }
+                            else
+                            {
+                                <div>@item.NewPriority.ToString()</div>
+                            }
+                        </td>
+                        <td>
+                            @if (item.NewStatus != item.OldStatus)
+                            {
+                                <div class="text-danger"><b>@item.NewStatus</b></div>;
+                            }
+                            else
+                            {
+                                <div>@item.NewStatus.ToString()</div>
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+}    

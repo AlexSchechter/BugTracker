@@ -7,8 +7,9 @@
         <a href="~/Tickets/Index" class="btn btn-primary btn-md btn-long">Back to All Tickets</a>
         @if (ViewBag.CanCreate)
         {
-            @Html.ActionLink("Edit Ticket", "Edit", new { ticketId = @Model.Id }, new { @class = "btn btn-warning btn-md btn-long" });
+            @Html.ActionLink("Edit Ticket", "Edit", new { ticketId = Model.Id }, new { @class = "btn btn-warning btn-md btn-long" });
         }
+        @Html.ActionLink("Ticket History", "Changes", new { ticketId = Model.Id}, new { @class = "btn btn-danger btn-md btn-long" })
     </div>
     <div class="widget">
         <div class="widget-header clearfix">
