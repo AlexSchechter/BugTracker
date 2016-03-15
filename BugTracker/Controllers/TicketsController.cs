@@ -128,17 +128,42 @@ namespace BugTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,ProjectManager,Developer")]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,SubmittedById,DeveloperId,ProjectId,CreationDate,Title,Description,Status,Type,Priority")] Ticket ticket)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,SubmittedById,DeveloperId,ProjectId,CreationDate,Title,Description,Status,Type,Priority")] Ticket updatedTicket)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(ticket).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                ApplicationDbContext db2 = new ApplicationDbContext();
+                Ticket originalTicket = await db2.Tickets.FindAsync(updatedTicket.Id);
+                if (originalTicket.DeveloperId == updatedTicket.DeveloperId
+                    && originalTicket.Priority == updatedTicket.Priority
+                    && originalTicket.Status == updatedTicket.Status && originalTicket.Type == updatedTicket.Type)
+                {
+                    return RedirectToAction("Index");
+                }
+                   
+                TicketChange changes = new TicketChange
+                {
+                    TicketId = originalTicket.Id,
+                    ChangedById = User.Identity.GetUserId(),
+                    Date = DateTimeOffset.Now,
+                    OldDeveloperId = originalTicket.DeveloperId,
+                    NewDeveloperId = updatedTicket.DeveloperId,
+                    OldPriority = originalTicket.Priority,
+                    NewPriority = updatedTicket.Priority,
+                    OldStatus = originalTicket.Status,
+                    NewStatus = updatedTicket.Status,
+                    OldType = originalTicket.Type,
+                    NewType = updatedTicket.Type
+                };
+
+                db.Entry(updatedTicket).State = EntityState.Modified;
+                    db.TicketChanges.Add(changes);
+                    await db.SaveChangesAsync();
+                    return RedirectToAction("Index");            
             }
-            ViewBag.DeveloperId = new SelectList(GetDevelopersForProject(ticket.ProjectId), "Id", "FirstName", ticket.DeveloperId);
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
-            return View(ticket);
+            ViewBag.DeveloperId = new SelectList(GetDevelopersForProject(updatedTicket.ProjectId), "Id", "FirstName", updatedTicket.DeveloperId);
+            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", updatedTicket.ProjectId);
+            return View(updatedTicket);
         }
 
         // GET: Tickets/Delete/5

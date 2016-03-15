@@ -20,6 +20,9 @@ namespace BugTracker.Models
             AssignedProjects = new HashSet<Project>();
             AssignedTickets = new HashSet<Ticket>();
             SubmittedTickets = new HashSet<Ticket>();
+            TicketChanges = new HashSet<TicketChange>();
+            OldDevelopers = new HashSet<TicketChange>();
+            NewDevelopers = new HashSet<TicketChange>();
         }
 
         public string FirstName { get; set; }
@@ -39,6 +42,10 @@ namespace BugTracker.Models
         public virtual ICollection<Ticket> SubmittedTickets { get; set; }
         [InverseProperty("ChangedBy")]
         public virtual ICollection<TicketChange> TicketChanges { get; set; }
+        [InverseProperty("OldDeveloper")]
+        public virtual ICollection<TicketChange> OldDevelopers { get; set; }
+        [InverseProperty("NewDeveloper")]
+        public virtual ICollection<TicketChange> NewDevelopers { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

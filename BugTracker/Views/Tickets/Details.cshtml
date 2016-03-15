@@ -89,7 +89,7 @@
         using (Html.BeginForm("Create", "Attachments", new { ticketId = Model.Id }, FormMethod.Post,  new { @class = "form-horizontal", role = "form", id = "newHousehold" , enctype = "Multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.ValidationSummary("", new { @class = "text-danger" })
             <div class="form-group">
                 <div class="input-group">
                     <input type="text" class="form-control" name="description" placeholder="Attachement Name">
