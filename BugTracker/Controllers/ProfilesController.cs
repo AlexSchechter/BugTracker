@@ -43,36 +43,63 @@ namespace BugTracker.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Username = user.UserName,
-                Role = (UserRole)GetRole(user.Id)
+                Role = (UserRole)GetRole(user.Id),
             });
         }
 
-        //GET: /Manage/EditProfile
+        //GET: /Profiles/EditProfile //Edit Own Profile
         [HttpGet]
         [ChildActionOnly]
         public ActionResult EditProfile(ProfileViewModel profile)
-        {
+        {           
             profile.UserId = db.Users.FirstOrDefault(u => u.UserName == profile.Username).Id;
-            ViewBag.OldRole = profile.Role;
             return View(profile);
         }
 
-        //POST: /Profile/EditProfile
+        //POST: /Profiles/EditProfile 
         [HttpPost]
-        public async Task<ActionResult> EditProfile(ProfileViewModel profile, UserRole oldRole)
+        public async Task<ActionResult> EditProfile(ProfileViewModel profile, UserRole? oldRole)
         {
             if (profile == null)
                 RedirectToAction("Index", "Home");
 
             ApplicationUser user = db.Users.Find(profile.UserId);    
             user.UserName = profile.Username;
-            user.Email = profile.Email;
+            //user.Email = profile.Email;
             user.FirstName = profile.FirstName;
             user.LastName = profile.LastName;
-            await userManager.RemoveFromRoleAsync(user.Id, oldRole.ToString());
-            await userManager.AddToRoleAsync(user.Id, profile.Role.ToString());
+            if(oldRole != null && GetRole() == UserRole.Admin)
+            {
+                await UserManager.RemoveFromRoleAsync(user.Id, oldRole.ToString());
+                await UserManager.AddToRoleAsync(user.Id, profile.Role.ToString());
+            }          
             await db.SaveChangesAsync();
-            return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
+
+            if (oldRole == null)
+                return RedirectToAction("UserProfile");
+            return RedirectToAction("Index");
+        }
+
+        //GET: /Profile/Edit  //edit someone's else profile
+        [Authorize(Roles = "Admin")] 
+        public ActionResult Edit(string email)
+        {
+            if (email == null)
+                return RedirectToAction("Index");
+
+            ApplicationUser user = db.Users.FirstOrDefault(u => u.Email == email);
+            UserRole role = (UserRole)GetRole(user.Id);
+            ViewBag.OldRole = role;
+            return View(new ProfileViewModel
+            {
+                UserId = user.Id,
+                //Email = user.Email,
+                Username = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Role = role
+            });
+
         }
     }
 }

@@ -11,10 +11,11 @@ using BugTracker.Models;
 namespace BugTracker.Controllers
 {
     [Authorize]
-    public class AccountController : BaseController
+    public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public AccountController()
         {
@@ -158,7 +159,7 @@ namespace BugTracker.Controllers
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
-                {
+                {                   
                     string userId = (await db.Users.FirstAsync(u => u.Email == user.Email)).Id;
                     await UserManager.AddToRoleAsync(userId, "Submitter");
                     string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account");

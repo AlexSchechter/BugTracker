@@ -56,7 +56,7 @@ namespace BugTracker.Controllers
                     Description = description,
                     Date = DateTimeOffset.Now,
                     TicketId = ticketId,
-                    Url = string.Concat("/assets/Attachements/", fileName)
+                    Url = string.Concat("~/assets/Attachments/", fileName)
                 });
             await db.SaveChangesAsync();
             return RedirectToAction("Index", "Attachments", new { ticketId = ticketId});                  

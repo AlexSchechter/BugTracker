@@ -1,6 +1,7 @@
 ﻿using BugTracker.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -13,13 +14,26 @@ namespace BugTracker.Controllers
     public class BaseController : Controller
     {    
         protected ApplicationDbContext db = new ApplicationDbContext();
-        protected UserManager<ApplicationUser> userManager;
+        //protected UserManager<ApplicationUser> userManager;
         protected RoleManager<IdentityRole> roleManager;
+        private ApplicationUserManager _userManager;
 
         public BaseController()
         {
-            userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+           // userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
             roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+        }
+
+        protected ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
         }
 
         protected ApplicationUser GetUserInfo()
@@ -45,7 +59,7 @@ namespace BugTracker.Controllers
 
         public UserRole GetRole()
         {
-            string roleId = userManager.FindById(GetUserInfo().Id).Roles.First().RoleId;
+            string roleId = UserManager.FindById(GetUserInfo().Id).Roles.First().RoleId;
             return (UserRole)Enum.Parse(typeof(UserRole), roleManager.FindById(roleId).Name);
         }
 
@@ -55,13 +69,13 @@ namespace BugTracker.Controllers
             if (userId == null)
                 return null;
 
-            string roleId = userManager.FindById(userId).Roles.First().RoleId;
+            string roleId = UserManager.FindById(userId).Roles.First().RoleId;
             return (UserRole)Enum.Parse(typeof(UserRole), roleManager.FindById(roleId).Name);
         }
 
         public string GetRoleString(string userId)
         {
-            string roleId = userManager.FindById(userId).Roles.First().RoleId;
+            string roleId = UserManager.FindById(userId).Roles.First().RoleId;
             return roleManager.FindById(roleId).Name;
         }
 
@@ -73,7 +87,7 @@ namespace BugTracker.Controllers
 
         public IEnumerable<ApplicationUser> GetProjectManagers()
         {
-            return db.Users.ToList().Where(u => userManager.IsInRole(u.Id, "ProjectManager"));            
+            return db.Users.ToList().Where(u => UserManager.IsInRole(u.Id, "ProjectManager"));            
         }
 
         public IEnumerable<Project> GetProjectsForDeveloper(string developerId)

@@ -14,7 +14,7 @@ namespace BugTracker.Controllers
     [Authorize]
     public class TicketsController : BaseController
     {
-        // GET: Tickets
+        // GET: Tickets/Index
         public async Task<ActionResult> Index(string selectedUserId, int? projectId)
         {
             ViewBag.UserId = User.Identity.GetUserId();
@@ -39,7 +39,6 @@ namespace BugTracker.Controllers
                 case UserRole.ProjectManager:
                     ViewBag.Header = String.Concat("List of Tickets Managed by ", selectedUserFullName);
                     var projects = db.Projects.Where(p => p.ManagerId == selectedUserId);
-                    //return View(await db.Tickets.Where(t => projects.Select(p => p.ManagerId).Contains(selectedUserId)).ToListAsync());
                     List<Ticket> tickets = new List<Ticket>();
                     foreach (Project project in projects)
                         tickets.AddRange(await db.Tickets.Where(t => t.ProjectId == project.Id).ToListAsync());
@@ -115,7 +114,7 @@ namespace BugTracker.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.DeveloperId = new SelectList(GetDevelopersForProject(ticket.ProjectId), "Id", "FirstName", ticket.DeveloperId);
+            ViewBag.DeveloperId = new SelectList(GetDevelopersForProject(ticket.ProjectId), "Id", "UserName", ticket.DeveloperId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
             return View(ticket);
         }
@@ -132,11 +131,18 @@ namespace BugTracker.Controllers
             {
                 ApplicationDbContext db2 = new ApplicationDbContext();
                 Ticket originalTicket = await db2.Tickets.FindAsync(updatedTicket.Id);
+
                 if (originalTicket.DeveloperId == updatedTicket.DeveloperId
                     && originalTicket.Priority == updatedTicket.Priority
                     && originalTicket.Status == updatedTicket.Status && originalTicket.Type == updatedTicket.Type)
                 {
                     return RedirectToAction("Index");
+                }
+
+                if (originalTicket.DeveloperId != updatedTicket.DeveloperId)
+                {
+                    var callbackUrl = Url.Action("Details", "Tickets", new { ticketId = updatedTicket.Id }, protocol: Request.Url.Scheme);
+                    await UserManager.SendEmailAsync(updatedTicket.DeveloperId, "You have been assigend to a ticket", "View details of the ticket <a href=\"" + callbackUrl + "\">here</a>");
                 }
                    
                 TicketChange changes = new TicketChange
@@ -155,9 +161,9 @@ namespace BugTracker.Controllers
                 };
 
                 db.Entry(updatedTicket).State = EntityState.Modified;
-                    db.TicketChanges.Add(changes);
-                    await db.SaveChangesAsync();
-                    return RedirectToAction("Index");            
+                db.TicketChanges.Add(changes);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");            
             }
             ViewBag.DeveloperId = new SelectList(GetDevelopersForProject(updatedTicket.ProjectId), "Id", "FirstName", updatedTicket.DeveloperId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", updatedTicket.ProjectId);

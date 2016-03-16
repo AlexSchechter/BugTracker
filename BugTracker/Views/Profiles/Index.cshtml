@@ -64,7 +64,7 @@
                                     @Html.DisplayFor(modelItem => item.Role)
                                 </td>
                                 <td>
-                                    @Html.ActionLink("Edit", "Index", new { position = Model.IndexOf(item) }, new { @class = "btn btn-primary btn-xs edit-profile-button" })
+                                    @Html.ActionLink("Edit", "Edit", new { email = item.Email }, new { @class = "btn btn-primary btn-xs" })
                                 </td>
                             </tr>
                         }
@@ -73,8 +73,9 @@
             </div>
         </div>
     </div>
+    @*<div id="pickedForEditing"></div>
         @if (ViewBag.PickPosition != null)
         {
             @Html.Action("EditProfile", "Profiles", new { profile = Model[ViewBag.PickPosition] })
-        }
+        }*@
 </div>
