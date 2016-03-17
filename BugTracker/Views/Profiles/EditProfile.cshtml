@@ -38,10 +38,14 @@
                     <div class="col-sm-10">
                         @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
                     </div>
-                </div>              
+                </div>
+                <div class="text-danger">
+                    Please contact an admin to request a Role change.
+                </div>
                 <div class="form-group">
                     <input type="submit" class="btn btn-success btn-block" value="Save Changes" />
                 </div>
+               
         }
     </div>
 </div>

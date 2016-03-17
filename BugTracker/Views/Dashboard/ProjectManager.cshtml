@@ -1,0 +1,320 @@
+﻿@using BugTracker.Models
+@model ProjectManagerViewModel
+
+<div class="container-fluid primary-content">
+    <div class="primary-content-heading clearfix">
+        <h2>Dashboard for @Html.Action("UserFullName", "Layout") (Role: Project Manager)</h2>
+    </div>
+    <div class="row">
+        <div class="widget" id="projectsWidget">
+            <div class="widget-header">
+                <h3><b><i>Own Projects</i></b></h3>
+            </div>
+            <div class="widget-content">
+                <table class="table table-striped">
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Active Tickets
+                        </th>
+                        <th>
+                            Project Manager
+                        </th>
+                        <th>
+                            Assigned Developers
+                        </th>
+                        <th>
+                            Creation Date
+                        </th>
+                    </tr>
+
+                    @foreach (var item in Model.OwnProjects)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @item.Tickets.Where(t => t.Status != TicketStatus.Closed).Count()
+                            </td>
+                            <td>
+                                @String.Concat(item.Manager.FirstName, " ", item.Manager.LastName)
+                            </td>
+                            <td>
+                                @item.Developers.Count()
+                            </td>
+                            <td>
+                                @item.CreationDate.ToString("d")
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="widget">
+            <div class="widget-header">
+                <h3><b><i> Critical Tickets</i></b>@Html.ActionLink("All Tickets", "Index", "Tickets", null, new { @class = "btn btn-xs btn-success btn-dashboard" })</h3>
+            </div>
+            <div class="widget-content">
+                <table class="table table-striped">
+                    <tr>
+                        <th>
+                            Title
+                        </th>
+                        <th>
+                            Submitted By
+                        </th>
+                        <th>
+                            Project
+                        </th>
+                        <th>
+                            Project Manager
+                        </th>
+                        <th>
+                            Developer
+                        </th>
+                        <th>
+                            Created
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Priority
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                        </th>
+                    
+                    </tr>              
+                    @foreach (var item in Model.CriticalTickets)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @String.Concat(item.SubmittedBy.FirstName, " ", item.SubmittedBy.LastName)
+                            </td>
+                            <td>
+                                @item.Project.Name
+                            </td>
+                            <td>
+                                @String.Concat(item.Project.Manager.FirstName, " ", item.Project.Manager.LastName)
+                            </td>
+                            @if (item.Developer != null)
+                            {
+                                <td>
+                                    @String.Concat(item.Developer.FirstName, " ", item.Developer.LastName)
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    Unassigned
+                                </td>
+                            }
+                            <td>
+                                @item.CreationDate.ToString("d")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Priority)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Details", "Details", "Tickets", new { ticketId = item.Id }, new { @class = "btn btn-danger btn-xs" })
+                            </td>
+                        </tr>
+                    }             
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="widget">
+            <div class="widget-header">
+                <h3><b><i> Unassigned Tickets</i></b>@Html.ActionLink("All Tickets", "Index", "Tickets", null, new { @class = "btn btn-xs btn-success btn-dashboard" })</h3>
+            </div>
+            <div class="widget-content">
+                <table class="table table-striped">
+                    <tr>
+                        <th>
+                            Title
+                        </th>
+                        <th>
+                            Submitted By
+                        </th>
+                        <th>
+                            Project
+                        </th>
+                        <th>
+                            Project Manager
+                        </th>
+                        <th>
+                            Developer
+                        </th>
+                        <th>
+                            Created
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Priority
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                        </th>
+
+                    </tr>
+                    @foreach (var item in Model.UnassignedTickets)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @String.Concat(item.SubmittedBy.FirstName, " ", item.SubmittedBy.LastName)
+                            </td>
+                            <td>
+                                @item.Project.Name
+                            </td>
+                            <td>
+                                @String.Concat(item.Project.Manager.FirstName, " ", item.Project.Manager.LastName)
+                            </td>
+                            @if (item.Developer != null)
+                            {
+                                <td>
+                                    @String.Concat(item.Developer.FirstName, " ", item.Developer.LastName)
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    Unassigned
+                                </td>
+                            }
+                            <td>
+                                @item.CreationDate.ToString("d")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Priority)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Details", "Details", "Tickets", new { ticketId = item.Id }, new { @class = "btn btn-danger btn-xs" })
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="widget">
+            <div class="widget-header">
+                <h3><b><i> Tickets Waiting to be Closed</i></b>@Html.ActionLink("All Tickets", "Index", "Tickets", null, new { @class = "btn btn-xs btn-success btn-dashboard" })</h3>
+            </div>
+            <div class="widget-content">
+                <table class="table table-striped">
+                    <tr>
+                        <th>
+                            Title
+                        </th>
+                        <th>
+                            Submitted By
+                        </th>
+                        <th>
+                            Project
+                        </th>
+                        <th>
+                            Project Manager
+                        </th>
+                        <th>
+                            Developer
+                        </th>
+                        <th>
+                            Created
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Priority
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                        </th>
+
+                    </tr>
+                    @foreach (var item in Model.FinishedTickets)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @String.Concat(item.SubmittedBy.FirstName, " ", item.SubmittedBy.LastName)
+                            </td>
+                            <td>
+                                @item.Project.Name
+                            </td>
+                            <td>
+                                @String.Concat(item.Project.Manager.FirstName, " ", item.Project.Manager.LastName)
+                            </td>
+                            @if (item.Developer != null)
+                            {
+                                <td>
+                                    @String.Concat(item.Developer.FirstName, " ", item.Developer.LastName)
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    Unassigned
+                                </td>
+                            }
+                            <td>
+                                @item.CreationDate.ToString("d")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Priority)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Details", "Details", "Tickets", new { ticketId = item.Id }, new { @class = "btn btn-danger btn-xs" })
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+

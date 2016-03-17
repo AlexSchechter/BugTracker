@@ -1,5 +1,14 @@
-﻿/*Home page*/
+﻿/*Dashboard*/
+#topProjects
+{
+    padding-top: 21px;
+}
 
+.btn.btn-xs.btn-dashboard
+{
+    margin-left: 10px;
+    margin-bottom: 4px;
+}
 
 
 /* NonAuthenticated */

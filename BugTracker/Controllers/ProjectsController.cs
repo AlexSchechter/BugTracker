@@ -24,28 +24,15 @@ namespace BugTracker.Controllers
             switch (role)
             {
                 case UserRole.Admin:
-                    return View(await db.Projects.Include(p => p.Manager).ToListAsync());
+                    return View(await db.Projects.Include(p => p.Manager)
+                        .OrderByDescending(p => p.Tickets.Where(t => t.Status != TicketStatus.Closed).Count()).ToListAsync());
                 case UserRole.ProjectManager:                   
-                    return View(db.Users.Find(userId).ManagedProjects.ToList());
+                    return View(db.Users.Find(userId).ManagedProjects
+                        .OrderByDescending(p => p.Tickets.Where(t => t.Status != TicketStatus.Closed).Count()).ToList());
                 default:
-                    return View(db.Users.Find(userId).AssignedProjects.ToList());
-            }
- 
-        }
-
-        // GET: Projects/Details/5
-        public async Task<ActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Project project = await db.Projects.FindAsync(id);
-            if (project == null)
-            {
-                return HttpNotFound();
-            }
-            return View(project);
+                    return View(db.Users.Find(userId).AssignedProjects
+                        .OrderByDescending(p => p.Tickets.Where(t => t.Status != TicketStatus.Closed).Count()).ToList());
+            } 
         }
 
         [Authorize(Roles = "Admin")]
@@ -140,32 +127,6 @@ namespace BugTracker.Controllers
                 return RedirectToAction("Index");
             }
             return View(model);
-        }
-
-        // GET: Projects/Delete/5
-        public async Task<ActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Project project = await db.Projects.FindAsync(id);
-            if (project == null)
-            {
-                return HttpNotFound();
-            }
-            return View(project);
-        }
-
-        // POST: Projects/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
-        {
-            Project project = await db.Projects.FindAsync(id);
-            db.Projects.Remove(project);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
         }
     }
 }

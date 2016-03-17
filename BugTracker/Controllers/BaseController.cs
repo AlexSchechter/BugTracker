@@ -14,13 +14,11 @@ namespace BugTracker.Controllers
     public class BaseController : Controller
     {    
         protected ApplicationDbContext db = new ApplicationDbContext();
-        //protected UserManager<ApplicationUser> userManager;
         protected RoleManager<IdentityRole> roleManager;
         private ApplicationUserManager _userManager;
 
         public BaseController()
-        {
-           // userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+        {          
             roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
         }
 
@@ -59,7 +57,7 @@ namespace BugTracker.Controllers
 
         public UserRole GetRole()
         {
-            string roleId = UserManager.FindById(GetUserInfo().Id).Roles.First().RoleId;
+            string roleId = UserManager.FindById(GetUserInfo().Id).Roles.First().RoleId;           
             return (UserRole)Enum.Parse(typeof(UserRole), roleManager.FindById(roleId).Name);
         }
 
@@ -82,12 +80,21 @@ namespace BugTracker.Controllers
         public IEnumerable<ApplicationUser> GetDevelopers()
         {           
             return db.Database.SqlQuery<ApplicationUser>("EXEC GetDevelopers");
-            //return db.Users.ToList().Where(userManager.IsInRole(u.Id, "Developer"));
         }
 
         public IEnumerable<ApplicationUser> GetProjectManagers()
         {
             return db.Users.ToList().Where(u => UserManager.IsInRole(u.Id, "ProjectManager"));            
+        }
+
+        public IEnumerable<ApplicationUser> GetAdmins()
+        {
+            return db.Users.ToList().Where(u => UserManager.IsInRole(u.Id, "Admin"));
+        }
+
+        public IEnumerable<ApplicationUser> GetSubmitters()
+        {
+            return db.Users.ToList().Where(u => UserManager.IsInRole(u.Id, "Submitter"));
         }
 
         public IEnumerable<Project> GetProjectsForDeveloper(string developerId)

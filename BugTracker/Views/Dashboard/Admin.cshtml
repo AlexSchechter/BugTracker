@@ -1,0 +1,172 @@
+﻿@using BugTracker.Models
+@model AdminViewModel
+
+<div class="container-fluid primary-content">
+    <div class="primary-content-heading clearfix">
+        <h2>Dashboard for @Html.Action("UserFullName", "Layout") (Role: Admin)</h2>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="widget">
+                <div class="widget-header">
+                    <h3><b><i> Roles Summary </i></b>@Html.ActionLink("All Profiles", "Index", "Profiles", null, new { @class = "btn btn-xs btn-success btn-dashboard" })</h3>                  
+                </div>
+                <div class="widget-content">
+                    <table class="table table-striped">
+                        <tr>
+                            <td>Admins</td>
+                            <td>@Model.AdminPopulation</td>
+                        </tr>
+                        <tr>
+                            <td>Project Managers</td>
+                            <td>@Model.PMPopulation</td>
+                        </tr>
+                        <tr>
+                            <td>Developer</td>
+                            <td>@Model.DeveloperPopulation</td>
+                        </tr>
+                        <tr>
+                            <td>Submitter</td>
+                            <td>@Model.SubmitterPopulation</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="widget">
+                <div class="widget-header">
+                    <h3><b><i>Top Projects</i></b>@Html.ActionLink("All Projects", "Index", "Projects", null, new { @class = "btn btn-xs btn-success btn-dashboard" })</h3>
+                </div>
+                <div class="widget-content">
+                    <div class="row" id="topProjects">
+                        @for (int i = 0; i <= 2; i++)
+                        {
+                            <div class="col-sm-4">
+                                <i><b>@Model.Projects[i].Name</b></i>
+                                <table class="table table-striped">
+                                    <tr>
+                                        <td>Active Tickets</td>
+                                        <td>@Model.Projects[i].Tickets.Where(t => t.Status != TicketStatus.Closed).Count()</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Developers</td>
+                                        <td>@Model.Projects[i].Developers.Count()</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                    <div class="row">
+                        @for (int i = 3; i <= 5; i++)
+                        {
+                            <div class="col-sm-4">
+                                <i><b>@Model.Projects[i].Name</b></i>
+                                <table class="table table-striped">
+                                    <tr>
+                                        <td>Active Tickets</td>
+                                        <td>@Model.Projects[i].Tickets.Where(t => t.Status != TicketStatus.Closed).Count()</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Developers</td>
+                                        <td>@Model.Projects[i].Developers.Count()</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="widget">
+            <div class="widget-header">
+                <h3><b><i> Critical Tickets</i></b>@Html.ActionLink("All Tickets", "Index", "Tickets", null, new { @class = "btn btn-xs btn-success btn-dashboard" })</h3>
+            </div>
+            <div class="widget-content">
+                <table class="table table-striped">
+                    <tr>
+                        <th>
+                            Title
+                        </th>
+                        <th>
+                            Submitted By
+                        </th>
+                        <th>
+                            Project
+                        </th>
+                        <th>
+                            Project Manager
+                        </th>
+                        <th>
+                            Developer
+                        </th>
+                        <th>
+                            Created
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Priority
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                        </th>
+                    
+                    </tr>              
+                    @foreach (var item in Model.CriticalTickets)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @String.Concat(item.SubmittedBy.FirstName, " ", item.SubmittedBy.LastName)
+                            </td>
+                            <td>
+                                @item.Project.Name
+                            </td>
+                            <td>
+                                @String.Concat(item.Project.Manager.FirstName, " ", item.Project.Manager.LastName)
+                            </td>
+                            @if (item.Developer != null)
+                            {
+                                <td>
+                                    @String.Concat(item.Developer.FirstName, " ", item.Developer.LastName)
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    Unassigned
+                                </td>
+                            }
+                            <td>
+                                @item.CreationDate.ToString("d")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Priority)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Details", "Details", "Tickets", new { ticketId = item.Id }, new { @class = "btn btn-danger btn-xs" })
+                            </td>
+                        </tr>
+                    }             
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+

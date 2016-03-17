@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BugTracker.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,14 +7,13 @@ using System.Web.Mvc;
 
 namespace BugTracker.Controllers
 {
+    [Authorize]
     public class HomeController : BaseController
     {
         public ActionResult Index()
         {
-            if (GetUserInfo() == null)
-                return RedirectToAction("Login", "Account");
-
-            return View();
+            UserRole role = GetRole();           
+            return RedirectToAction(role.ToString(), "Dashboard");
         }
 
         public ActionResult About()

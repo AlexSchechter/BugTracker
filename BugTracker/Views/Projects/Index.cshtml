@@ -19,6 +19,9 @@
                     </th>
                     <th>
                         Project Manager
+                    </th>
+                    <th>
+                        Open Tickets
                     </th>                        
                     <th>
                         Assigned Developers
@@ -38,6 +41,9 @@
                         </td>
                         <td>
                             @String.Concat(item.Manager.FirstName, " ", item.Manager.LastName)
+                        </td>
+                        <td>
+                            @item.Tickets.Where(t => t.Status != TicketStatus.Closed).Count()
                         </td>
                         <td>
                             @item.Developers.Count

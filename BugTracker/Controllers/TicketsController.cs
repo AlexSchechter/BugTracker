@@ -142,7 +142,7 @@ namespace BugTracker.Controllers
                 if (originalTicket.DeveloperId != updatedTicket.DeveloperId)
                 {
                     var callbackUrl = Url.Action("Details", "Tickets", new { ticketId = updatedTicket.Id }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(updatedTicket.DeveloperId, "You have been assigend to a ticket", "View details of the ticket <a href=\"" + callbackUrl + "\">here</a>");
+                    await UserManager.SendEmailAsync(updatedTicket.DeveloperId, "You have been assigend to a ticket", "View details of the ticket <a href=\"" + callbackUrl + "\">here</a>");                  
                 }
                    
                 TicketChange changes = new TicketChange
