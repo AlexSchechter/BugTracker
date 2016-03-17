@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity;
 namespace BugTracker.Controllers
 {
     [Authorize]
+    [RequireHttps]
     public class TicketsController : BaseController
     {
         // GET: Tickets/Index
@@ -136,7 +137,7 @@ namespace BugTracker.Controllers
                     && originalTicket.Priority == updatedTicket.Priority
                     && originalTicket.Status == updatedTicket.Status && originalTicket.Type == updatedTicket.Type)
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Details", new { ticketId = updatedTicket.Id });
                 }
 
                 if (originalTicket.DeveloperId != updatedTicket.DeveloperId)
@@ -163,7 +164,7 @@ namespace BugTracker.Controllers
                 db.Entry(updatedTicket).State = EntityState.Modified;
                 db.TicketChanges.Add(changes);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");            
+                return RedirectToAction("Details", new { ticketId = updatedTicket.Id });            
             }
             ViewBag.DeveloperId = new SelectList(GetDevelopersForProject(updatedTicket.ProjectId), "Id", "FirstName", updatedTicket.DeveloperId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", updatedTicket.ProjectId);

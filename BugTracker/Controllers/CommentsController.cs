@@ -10,6 +10,7 @@ using BugTracker.Models;
 namespace BugTracker.Controllers
 {
     [Authorize]
+    [RequireHttps]
     public class CommentsController : BaseController
     {      
         // GET: Comments

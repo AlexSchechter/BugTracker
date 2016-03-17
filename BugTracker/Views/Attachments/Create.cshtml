@@ -48,11 +48,12 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-default btn-demo" data-assigned-id = @User.Identity.Name />
             </div>
         </div>
     </div>
 }
+<div class="h4 text-danger demo-text" hidden>This functionality is disabled in the demo account. Please log in for full functionality.</div>
 
 <div>
     @Html.ActionLink("Back to List", "Index")

@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity;
 namespace BugTracker.Controllers
 {
     [Authorize(Roles = "Admin, ProjectManager, Developer")]
+    [RequireHttps]
     public class ProjectsController : BaseController
     {     
         // GET: Projects

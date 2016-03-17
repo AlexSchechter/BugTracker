@@ -46,4 +46,28 @@
     }
     <p><em>Don't have an account yet?</em> <a href="/Account/Register"><strong>Sign Up</strong></a></p>
 </div>
-<div class="login-separator text-center"><span>or sign in with</span></div>
+<div class="login-separator text-center"><span>or take a test drive with a Demo account:</span></div>
+<div class="row">
+    <div class="col-sm-3 ">
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Email, new { @Value = "robb@stark.com" })
+            @Html.HiddenFor(m => m.Password, new { @Value = "Demo-1" })
+            <div class="form-group" id="demoAccount">              
+                    <button type="submit" class="btn btn-block btn-lg btn-info">Demo Account as Admin</button>
+            </div>
+        }
+    </div>
+    <div class="col-sm-3">
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Email, new { @Value = "robb@stark.com" })
+            @Html.HiddenFor(m => m.Password, new { @Value = "Demo-1" })
+            <div class="form-group" id="demoAccount">
+                    <button type="submit" class="btn btn-block btn-lg btn-info">Demo Account as Project Manager</button>
+                </div>
+        }
+    </div>
+</div>

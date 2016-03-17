@@ -14,6 +14,7 @@ using Microsoft.AspNet.Identity;
 namespace BugTracker.Controllers
 {
     [Authorize]
+    [RequireHttps]
     public class AttachmentsController : BaseController
     {
      

@@ -43,13 +43,13 @@
                 @if (ViewBag.Role != UserRole.Admin)
                 {
                     <div class="text-danger">
-                        Please contact an admin to request a Role change.
+                        Please @Html.ActionLink("contact an admin", "Contact", "Home") to request a Role change.
                     </div>
                 }
                 <div class="form-group">
-                    <input type="submit" class="btn btn-success btn-block" value="Save Changes" />
-                </div>
-               
+                    <input type="submit" class="btn btn-success btn-block btn-demo" data-assigned-id = @User.Identity.Name value="Save Changes" />
+                </div>             
         }
+        <div class="h4 text-danger demo-text" hidden>This functionality is disabled in the demo account. Please log in for full functionality.</div>
     </div>
 </div>

@@ -24,7 +24,7 @@
                         <th>
                             @if (item.NewDeveloperId != item.OldDeveloperId)
                             {
-                                <div class="text-danger"><b>Developer</b></div>;
+                                <div class="text-danger">Developer</div>;
                             }
                             else
                             {
@@ -34,7 +34,7 @@
                         <th>
                             @if (item.NewType != item.OldType)
                             {
-                                <div class="text-danger"><b>Type</b></div>
+                                <div class="text-danger">Type</div>
                             }
                             else
                             {
@@ -45,7 +45,7 @@
                         <th>
                             @if (item.NewPriority != item.OldPriority)
                             {
-                                <div class="text-danger"><b>Priority</b></div>
+                                <div class="text-danger">Priority</div>
                             }
                             else
                             {
@@ -55,7 +55,7 @@
                         <th>
                             @if (item.NewStatus != item.OldStatus)
                             {
-                                <div class="text-danger"><b>Status</b></div>
+                                <div class="text-danger">Status</div>
                             }
                             else
                             {
@@ -65,12 +65,19 @@
                     </tr>
                     <tr>
                         <td>
-                            <b>Before</b>
+                            Before
                         </td>
                         <td>
                             @if (item.NewDeveloperId != item.OldDeveloperId)
                             {
-                                <div class="text-danger"><b>@String.Concat(item.OldDeveloper.FirstName, " ", item.OldDeveloper.LastName)</b></div>;
+                                if (item.OldDeveloperId == null)
+                                {
+                                    <div class="text-danger">Unassigned</div>;
+                                }
+                                else
+                                {
+                                    <div class="text-danger">@String.Concat(item.OldDeveloper.FirstName, " ", item.OldDeveloper.LastName)</div>;
+                                }
                             }
                             else
                             {
@@ -80,7 +87,7 @@
                         <td>
                             @if (item.NewType != item.OldType)
                             {
-                                <div class="text-danger"><b>@item.OldType</b></div>
+                                <div class="text-danger">@item.OldType</div>
                             }
                             else
                             {
@@ -90,7 +97,7 @@
                         <td>
                             @if (item.NewPriority != item.OldPriority)
                             {
-                                <div class="text-danger"><b>@item.OldPriority</b></div>;
+                                <div class="text-danger">@item.OldPriority</div>;
                             }
                             else
                             {
@@ -100,7 +107,7 @@
                         <td>
                             @if (item.NewStatus != item.OldStatus)
                             {
-                                <div class="text-danger"><b>@item.OldStatus</b></div>;
+                                <div class="text-danger">@item.OldStatus</div>;
                             }
                             else
                             {
@@ -110,12 +117,12 @@
                     </tr>
                     <tr>
                         <td>
-                            <b>Changed to</b>
+                            Changed to
                         </td>
                         <td>
                             @if (item.NewDeveloperId != item.OldDeveloperId)
                             {
-                                <div class="text-danger"><b>@String.Concat(item.NewDeveloper.FirstName, " ", item.NewDeveloper.LastName)</b></div>;
+                                <div class="text-danger">@String.Concat(item.NewDeveloper.FirstName, " ", item.NewDeveloper.LastName)</div>;
                             }
                             else
                             {
@@ -125,7 +132,7 @@
                         <td>
                             @if (item.NewType != item.OldType)
                             {
-                                <div class="text-danger"><b>@item.NewType</b></div>;
+                                <div class="text-danger">@item.NewType</div>;
                             }
                             else
                             {
@@ -135,7 +142,7 @@
                         <td>
                             @if (item.NewPriority != item.OldPriority)
                             {
-                                <div class="text-danger"><b>@item.NewPriority</b></div>;
+                                <div class="text-danger">@item.NewPriority</div>;
                             }
                             else
                             {
@@ -145,7 +152,7 @@
                         <td>
                             @if (item.NewStatus != item.OldStatus)
                             {
-                                <div class="text-danger"><b>@item.NewStatus</b></div>;
+                                <div class="text-danger">@item.NewStatus</div>;
                             }
                             else
                             {
