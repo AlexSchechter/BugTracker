@@ -516,6 +516,8 @@
     <Content Include="Views\Profiles\Edit.cshtml" />
     <Content Include="Views\Dashboard\Admin.cshtml" />
     <Content Include="Views\Dashboard\ProjectManager.cshtml" />
+    <Content Include="Views\Dashboard\Developer.cshtml" />
+    <Content Include="Views\Dashboard\Submitter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

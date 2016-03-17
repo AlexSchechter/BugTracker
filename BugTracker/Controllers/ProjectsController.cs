@@ -40,9 +40,6 @@ namespace BugTracker.Controllers
         public ActionResult Create()
         {
 
-            //var help1 = roleManager.FindByNameAsync(UserRole.Admin.ToString()).Result.Users;
-            //var help = new MultiSelectList(roleManager.FindByNameAsync(UserRole.Admin.ToString()).Result.Users, "Id", "Id");
-
             return View(new ProjectViewModel
             {
                 Developers = new MultiSelectList(GetDevelopers(), "Id", "Email"),               

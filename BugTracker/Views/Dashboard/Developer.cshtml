@@ -1,0 +1,94 @@
+﻿@using BugTracker.Models
+@model List<Ticket>
+
+<div class="primary-content-heading clearfix">
+    <h2><i class="icon ion-ios-list-outline"></i>&nbsp; Dashboard for @Html.Action("UserFullName", "Layout") (Role: Developer)</h2>
+</div>
+ 
+<div class="row">
+    <div class="widget">
+        <div class="widget-header">
+            <h3><b><i> Own Tickets</i></b>@Html.ActionLink("All Tickets", "Index", "Tickets", null, new { @class = "btn btn-xs btn-success btn-dashboard" })</h3>
+        </div>
+        <div class="widget-content">
+            <table class="table table-striped">
+                <tr>
+                    <th>
+                        Title
+                    </th>
+                    <th>
+                        Submitted By
+                    </th>
+                    <th>
+                        Project
+                    </th>
+                    <th>
+                        Project Manager
+                    </th>
+                    <th>
+                        Developer
+                    </th>
+                    <th>
+                        Created
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Priority
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                    </th>
+
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @String.Concat(item.SubmittedBy.FirstName, " ", item.SubmittedBy.LastName)
+                        </td>
+                        <td>
+                            @item.Project.Name
+                        </td>
+                        <td>
+                            @String.Concat(item.Project.Manager.FirstName, " ", item.Project.Manager.LastName)
+                        </td>
+                        @if (item.Developer != null)
+                        {
+                            <td>
+                                @String.Concat(item.Developer.FirstName, " ", item.Developer.LastName)
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                Unassigned
+                            </td>
+                        }
+                        <td>
+                            @item.CreationDate.ToString("d")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Priority)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Details", "Details", "Tickets", new { ticketId = item.Id }, new { @class = "btn btn-danger btn-xs" })
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>

@@ -32,7 +32,7 @@ namespace BugTracker.Controllers
         [Authorize(Roles = "ProjectManager")]
         public async Task<ActionResult> ProjectManager()
         {
-            string userId = GetUserInfo().Id;
+            string userId = User.Identity.GetUserId();
             return View(new ProjectManagerViewModel
             {
                 OwnProjects = await db.Projects.Where(p => p.ManagerId == userId)
@@ -46,6 +46,21 @@ namespace BugTracker.Controllers
             });
         }
 
-      
+        //GET: Dashboard/Developer
+        [Authorize(Roles = "Developer")]
+        public async Task<ActionResult> Developer()
+        {
+            string userId = User.Identity.GetUserId();
+            return View(await db.Tickets.Where(t => t.DeveloperId == userId).OrderByDescending(t => t.CreationDate).ToListAsync());
+
+        }
+
+        //GET: Dashboard/Submitter
+        [Authorize(Roles = "Submitter")]
+        public async Task<ActionResult> Submitter()
+        {
+            string userId = User.Identity.GetUserId();
+            return View(await db.Tickets.Where(t => t.SubmittedById == userId).OrderByDescending(t => t.CreationDate).ToListAsync());
+        }     
     }
 }

@@ -51,7 +51,8 @@ namespace BugTracker.Controllers
         [HttpGet]
         [ChildActionOnly]
         public ActionResult EditProfile(ProfileViewModel profile)
-        {           
+        {
+            ViewBag.Role = GetRole();
             profile.UserId = db.Users.FirstOrDefault(u => u.UserName == profile.Username).Id;
             return View(profile);
         }
