@@ -10,6 +10,17 @@
     margin-bottom: 4px;
 }
 
+/*Login*/
+.demo-login
+{
+    margin: 5px;
+    width: 20%;
+}
+
+.btn-demo-login
+{
+    width: 300px
+}
 
 /* NonAuthenticated */
 #site-logo 

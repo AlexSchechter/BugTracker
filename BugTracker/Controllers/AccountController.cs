@@ -75,6 +75,11 @@ namespace BugTracker.Controllers
                 return View(model);
             
             ApplicationUser user = await UserManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Invalid login attempt.");
+                return View(model);
+            }
             if (!await UserManager.IsEmailConfirmedAsync(user.Id))
             {
                 string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account-Resend");

@@ -51,9 +51,12 @@
                         <td>
                             @item.CreationDate.ToString("d")
                         </td>
-                        <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-xs" })
-                        </td>
+                        @if (ViewBag.Role != UserRole.Developer)
+                        {
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-xs" })
+                            </td> 
+                        }                      
                         <td>
                             @Html.ActionLink("Tickets", "Index", "Tickets", new { projectId = item.Id }, new { @class = "btn btn-danger btn-xs" })
                         </td>

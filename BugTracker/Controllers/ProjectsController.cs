@@ -77,15 +77,16 @@ namespace BugTracker.Controllers
         [Authorize(Roles="Admin, ProjectManager")]
         public async Task<ActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
+            if (id == null)           
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            
             Project project = await db.Projects.FindAsync(id);
-            if (project == null)
-            {
+            if (project == null)           
                 return HttpNotFound();
-            }
+            
+            if (GetRole() == UserRole.ProjectManager && project.ManagerId != User.Identity.GetUserId())
+                return RedirectToAction("Index", "Projects");
+
             return View(new ProjectViewModel
             {
                 Developers = new MultiSelectList(GetDevelopers(), "Id", "Email"),
@@ -108,6 +109,9 @@ namespace BugTracker.Controllers
             if (ModelState.IsValid)
             {
                 Project project = await db.Projects.FindAsync(model.ProjectId);
+                if (GetRole() == UserRole.ProjectManager && project.ManagerId != User.Identity.GetUserId())
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
                 project.Name = model.ProjectName;
                 project.ManagerId = model.SelectedProjectManagerId;
 

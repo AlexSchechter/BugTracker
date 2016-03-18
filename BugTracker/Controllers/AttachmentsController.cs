@@ -44,9 +44,12 @@ namespace BugTracker.Controllers
         // POST: Attachments/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(int ticketId, string description, HttpPostedFileBase fileUpload)
+        public async Task<ActionResult> Create(int? ticketId, string description, HttpPostedFileBase fileUpload)
         {
-            if (!ModelState.IsValid || !CanCommentOrAttach(ticketId))
+            if (ticketId == null)
+                return RedirectToAction("Index", "Tickets");
+
+            if (!ModelState.IsValid || !CanCommentOrAttach((int)ticketId) || fileUpload == null)
                 return RedirectToAction("Details", "Tickets", new { ticketID = ticketId });
 
             var fileName = Path.GetFileName(fileUpload.FileName);
@@ -56,7 +59,7 @@ namespace BugTracker.Controllers
                     CreatedById = User.Identity.GetUserId(),
                     Description = description,
                     Date = DateTimeOffset.Now,
-                    TicketId = ticketId,
+                    TicketId = (int)ticketId,
                     Url = string.Concat("~/assets/Attachments/", fileName)
                 });
             await db.SaveChangesAsync();

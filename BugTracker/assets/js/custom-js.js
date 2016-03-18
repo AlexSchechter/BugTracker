@@ -8,7 +8,7 @@
 
     $(".btn-demo").click(function (event) {
         var user = $(this).data('assigned-id');
-        if (user == "robb@stark.com") {
+        if (user == "robb@stark.com" || user == "petyr@littlefinger.com" || user == "arya@stark.com" || user == "cersei@lannister.com") {
             event.preventDefault();
             $(".demo-text").show();
         }

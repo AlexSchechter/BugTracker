@@ -11,7 +11,7 @@
     </div> 
     <div class="widget-content">
         <br />
-        @using (Html.BeginForm("EditProfile", "Profiles", new { oldRole = ViewBag.OldRole }, FormMethod.Post, new { @class = "form-horizontal partial-form", role = "form" }))
+        @using (Html.BeginForm("EditProfile", "Profiles", null, FormMethod.Post, new { @class = "form-horizontal partial-form", role = "form" }))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.UserId)
@@ -40,7 +40,7 @@
                         @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
                     </div>
                 </div>
-                @if (ViewBag.Role != UserRole.Admin)
+                if (ViewBag.Role != UserRole.Admin)
                 {
                     <div class="text-danger">
                         Please @Html.ActionLink("contact an admin", "Contact", "Home") to request a Role change.
