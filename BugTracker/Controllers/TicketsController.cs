@@ -69,6 +69,7 @@ namespace BugTracker.Controllers
             UserRole userRole = GetRole();
             ViewBag.Role = userRole;
             ViewBag.CanCreate = CanCommentOrAttach(ticket);
+            ViewBag.CanEdit = CanEdit(ticket);
 
             return View(ticket);
         }
@@ -105,16 +106,14 @@ namespace BugTracker.Controllers
         [Authorize(Roles = "Admin,ProjectManager,Developer")]
         public async Task<ActionResult> Edit(int? ticketId)
         {
-            if (ticketId == null)
-            {
+            if (ticketId == null)            
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            
             ViewBag.Role = GetRole();
             Ticket ticket = await db.Tickets.FindAsync(ticketId);
-            if (ticket == null)
-            {
-                return HttpNotFound();
-            }
+            if (ticket == null || !CanEdit(ticket))
+                return RedirectToAction("Details", "Tickets", new { ticketId = ticketId });
+
             ViewBag.DeveloperId = new SelectList(GetDevelopersForProject(ticket.ProjectId), "Id", "UserName", ticket.DeveloperId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
             return View(ticket);
@@ -130,6 +129,9 @@ namespace BugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (!CanEdit(updatedTicket))
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
                 ApplicationDbContext db2 = new ApplicationDbContext();
                 Ticket originalTicket = await db2.Tickets.FindAsync(updatedTicket.Id);
 
@@ -177,17 +179,15 @@ namespace BugTracker.Controllers
             if (ticketId == null)
                 return RedirectToAction("Index");
 
-            ViewBag.Ticket = (await db.Tickets.FindAsync((int)ticketId)).Title;        
+            ViewBag.TicketName = (await db.Tickets.FindAsync((int)ticketId)).Title;
+            ViewBag.TicketId = ticketId;        
             return View(await db.TicketChanges.Where(t => t.TicketId == ticketId).OrderByDescending(t => t.Date).ToListAsync());
         }
 
-        protected override void Dispose(bool disposing)
+        private bool CanEdit (Ticket ticket)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            string userId = User.Identity.GetUserId();
+            return GetRole() == UserRole.Admin || ticket.Project.ManagerId == userId || ticket.DeveloperId == userId;
         }
     }
 }

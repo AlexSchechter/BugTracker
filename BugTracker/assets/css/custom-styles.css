@@ -1,4 +1,15 @@
-﻿/*Dashboard*/
+﻿/*Main Layout*/
+.logo 
+{
+    padding: 11px 5px;
+}
+
+.logo img 
+{
+    width: 145px;
+}
+
+/*Dashboard*/
 #topProjects
 {
     padding-top: 21px;
@@ -11,15 +22,10 @@
 }
 
 /*Login*/
-.demo-login
-{
-    margin: 5px;
-    width: 20%;
-}
 
-.btn-demo-login
+.test-btn
 {
-    width: 300px
+    margin-top: 4px;
 }
 
 /* NonAuthenticated */
@@ -32,8 +38,8 @@
 
 #site-logo > img
 {
-    width: 220px;
-    height: auto;
+    width: auto;
+    height: 100%;
 }
 
 .container-fluid.primary-content.not-authenticated

@@ -48,47 +48,55 @@
 </div>
 <div class="login-separator text-center h3"><span>or take a test drive with a Demo account:</span></div>
 <div class="row">
-    <div class="col-sm-3 demo-login">
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
         @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.Email, new { @Value = "robb@stark.com" })
             @Html.HiddenFor(m => m.Password, new { @Value = "Demo-1" })
-            <div class="form-group" id="demoAccount">              
-                    <button type="submit" class="btn btn-block btn-md btn-info ">Admin Demo Preview</button>
+            <div class="row" id="demoAccount">    
+                <div class="col-sm-12">
+                    <button type="submit" class="btn btn-block btn-info test-btn">Admin Demo Preview</button>
+                </div>   
             </div>
         }
     </div>
-    <div class="col-sm-3 demo-login">
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
         @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.Email, new { @Value = "petyr@littlefinger.com" })
             @Html.HiddenFor(m => m.Password, new { @Value = "Demo-1" })
-            <div class="form-group" id="demoAccount">
-                    <button type="submit" class="btn btn-block btn-md btn-info">Project Manager Demo Preview</button>
+            <div class="row" id="demoAccount">
+                <div class="col-sm-12">
+                    <button type="submit" class="btn btn-block btn-info test-btn">Project Manager Demo Preview</button>
                 </div>
+            </div>
         }
     </div>
-    <div class="col-sm-3 demo-login">
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
         @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.Email, new { @Value = "arya@stark.com" })
             @Html.HiddenFor(m => m.Password, new { @Value = "Demo-1" })
-            <div class="form-group" id="demoAccount">
-                <button type="submit" class="btn btn-block btn-md btn-info">Developer Demo Preview</button>
+            <div class="row" id="demoAccount">
+                <div class="col-sm-12">
+                    <button type="submit" class="btn btn-block btn-info test-btn">Developer Demo Preview</button>
+                </div>
             </div>
         }
     </div>
-    <div class="col-sm-3 demo-login">
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
         @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.Email, new { @Value = "cersei@lannister.com" })
             @Html.HiddenFor(m => m.Password, new { @Value = "Demo-1" })
-            <div class="form-group" id="demoAccount">
-                <button type="submit" class="btn btn-block btn-md btn-info">Submitter Demo Preview</button>
+            <div class="row" id="demoAccount">
+                <div class="col-sm-12">
+                    <button type="submit" class="btn btn-block btn-info test-btn">Submitter Demo Preview</button>
+                </div>
             </div>
         }
     </div>

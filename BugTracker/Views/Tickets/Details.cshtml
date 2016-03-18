@@ -5,7 +5,7 @@
     <div class="primary-content-heading clearfix">
         <br />
         <a href="~/Tickets/Index" class="btn btn-primary btn-md btn-long">Back to All Tickets</a>
-        @if (ViewBag.CanCreate)
+        @if (ViewBag.CanEdit)
         {
             @Html.ActionLink("Edit Ticket", "Edit", new { ticketId = Model.Id }, new { @class = "btn btn-warning btn-md btn-long" });
         }
