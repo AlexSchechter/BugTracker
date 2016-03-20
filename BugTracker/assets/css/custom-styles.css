@@ -92,6 +92,48 @@
     margin-bottom: 20px;
 }
 
+.file-upload-widget 
+{
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 15px;
+    width: 100%;
+    height: 35px;
+}
+
+.file-upload-widget input
+{
+    padding: 5px 0;
+    line-height: 35px;
+    color: #989898;
+    font-size: 14px;
+    background: #ffffff;
+    height: 34px;
+    width: 100%;
+    border: 1px solid #ccc;
+}
+
+#newHousehold input
+{
+    margin-bottom: 15px !important;
+}
+
+#upload-button 
+{
+    display: block;
+    position: absolute;
+    z-index: 3;
+    top: 0px;
+    width: 93px;
+}
+
+.data-link 
+{
+    text-decoration: underline;
+    color: #3F51B5;
+}
+
+
 /*Projects*/
 .btn-md.btn-projects
 {

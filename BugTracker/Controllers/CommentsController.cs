@@ -30,15 +30,15 @@ namespace BugTracker.Controllers
         }
 
         // GET: Comments/Create
-        public async Task<ActionResult> Create(int? ticketId)
+        public ActionResult Create(int? ticketId)
         {
             if (ticketId == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            Ticket ticket = await db.Tickets.FindAsync(ticketId);
+            Ticket ticket = db.Tickets.Find(ticketId);
 
-            if (!CanCommentOrAttach(ticket))
-                return RedirectToAction("Details", "Tickets", new { ticketId = ticketId });
+            //if (!CanCommentOrAttach(ticket))
+            //    return RedirectToAction("Details", "Tickets", new { ticketId = ticketId });
 
             ViewBag.TicketTitle = ticket.Title;
             ViewBag.Project = ticket.Project.Name;
@@ -57,9 +57,9 @@ namespace BugTracker.Controllers
                 comment.CreatedById = GetUserInfo().Id;
                 db.Comments.Add(comment);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Details", "Tickets", new { ticketId = comment.TicketId });
             }
-            return View(comment);
+            
+            return RedirectToAction("Details", "Tickets", new { ticketId = comment.TicketId });
         }       
     }
 }

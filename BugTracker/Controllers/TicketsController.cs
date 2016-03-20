@@ -129,11 +129,16 @@ namespace BugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (!CanEdit(updatedTicket))
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                //string userId = User.Identity.GetUserId();
+                ////if (!CanEdit(updatedTicket))
+                //Project project = db.Projects.Find(updatedTicket.ProjectId);
+                //if (!(GetRole() == UserRole.Admin || project.ManagerId == userId || updatedTicket.DeveloperId == userId))
+                //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
                 ApplicationDbContext db2 = new ApplicationDbContext();
                 Ticket originalTicket = await db2.Tickets.FindAsync(updatedTicket.Id);
+                if (!CanEdit(originalTicket)) //need to call with originalTicket as updatedTicked does not include ticket.Project needed in CanEdit method
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
                 if (originalTicket.DeveloperId == updatedTicket.DeveloperId
                     && originalTicket.Priority == updatedTicket.Priority
@@ -186,7 +191,7 @@ namespace BugTracker.Controllers
 
         private bool CanEdit (Ticket ticket)
         {
-            string userId = User.Identity.GetUserId();
+            string userId = User.Identity.GetUserId();          
             return GetRole() == UserRole.Admin || ticket.Project.ManagerId == userId || ticket.DeveloperId == userId;
         }
     }

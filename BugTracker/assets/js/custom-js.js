@@ -13,4 +13,8 @@
             $(".demo-text").show();
         }
     });
+
+    $("#upload-button").click(function () {
+        $("#fileUpload").click();
+    });
 });
