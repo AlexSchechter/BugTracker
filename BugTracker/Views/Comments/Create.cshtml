@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="widget-content">
-        @using (Html.BeginForm())
+        @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(model => model.TicketId)

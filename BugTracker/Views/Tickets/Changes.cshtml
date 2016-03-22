@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<BugTracker.Models.TicketChange>
 
-<h3><i class="icon ion-ios-list-outline"></i> <span>Changes History for the @ViewBag.TicketName Ticket </span></h3>
+<h3><i class="icon ion-ios-list-outline"></i> <span>History for the "@ViewBag.TicketName" Ticket </span></h3>
 @Html.ActionLink("Back to Ticket", "Details", "Tickets", new { ticketId = ViewBag.TicketId }, new { @class = "btn btn-primary btn-md btn-long" })
 <br />
 <br />

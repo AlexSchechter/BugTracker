@@ -85,6 +85,10 @@
 {
     margin-top: 20px;
 }
+.edit-profile-button
+{
+    width: auto;
+}
 
 /*Tickets*/
 #ticketsButtons
@@ -191,6 +195,12 @@ textarea
     cursor: inherit;
     display: block;
 }
+
+/*General*/
+/*.table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th 
+{
+    background-color: white;
+}*/
 
 @media(max-width: 850px) 
 {

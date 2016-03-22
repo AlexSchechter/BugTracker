@@ -27,7 +27,6 @@ namespace BugTracker.Controllers
             Ticket ticket = await db.Tickets.FindAsync(ticketId);
             ViewBag.CanCreate = CanCommentOrAttach(ticket);
             ViewBag.Ticket = ticket.Title;
-            ViewBag.Project = ticket.Project.Name;
             ViewBag.TicketId = ticket.Id;
             return View(await db.Attachments.Where(a => a.TicketId == ticketId).Include(a => a.CreatedBy)
                 .Include(a => a.Ticket).ToListAsync());
