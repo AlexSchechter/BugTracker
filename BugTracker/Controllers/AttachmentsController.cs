@@ -16,8 +16,7 @@ namespace BugTracker.Controllers
     [Authorize]
     [RequireHttps]
     public class AttachmentsController : BaseController
-    {
-     
+    {     
         // GET: Attachments
         public async Task<ActionResult> Index(int? ticketId)
         {
@@ -48,7 +47,7 @@ namespace BugTracker.Controllers
             if (ticketId == null)
                 return RedirectToAction("Index", "Tickets");
 
-            if (!ModelState.IsValid || !CanCommentOrAttach((int)ticketId) || fileUpload == null)
+            if (!ModelState.IsValid || !CanCommentOrAttach((int)ticketId) || fileUpload == null || DemoEmails.Contains(User.Identity.Name))
                 return RedirectToAction("Details", "Tickets", new { ticketID = ticketId });
 
             var fileName = Path.GetFileName(fileUpload.FileName);

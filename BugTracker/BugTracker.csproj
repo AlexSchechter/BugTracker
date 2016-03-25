@@ -242,6 +242,9 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\Attachments\ScreenShot %281%29.jpg" />
+    <Content Include="assets\Attachments\ScreenShot.jpg" />
+    <Content Include="assets\Attachments\WinterFell.jpg" />
     <Content Include="assets\bootstrap-social.css" />
     <Content Include="assets\css\bootstrap-social.css" />
     <Content Include="assets\css\bootstrap.css" />
@@ -449,6 +452,7 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="assets\Documents\BugTrackerSpecifications.pdf" />
+    <Content Include="assets\Attachments\Details.xlsx" />
     <None Include="Properties\PublishProfiles\BugTrackerApp - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.2.1-vsdoc.js" />
@@ -515,7 +519,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="assets\Attachments\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

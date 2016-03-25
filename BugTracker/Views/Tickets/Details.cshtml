@@ -101,10 +101,9 @@
     @if (ViewBag.CanCreate)
     {
         @Html.Action("Create", "Comments", new { ticketId = Model.Id });
-    }
 
-    @if (ViewBag.CanCreate)
-    {
+        <div class="h4 text-danger demo-text" hidden>This functionality is disabled in the demo account. Please log in for full functionality.</div>
+        
         <div class="widget">
             <div class="widget-header clearfix">
                 <h3><i class="icon ion-compose"></i> <span>Add Attachment</span></h3>
@@ -123,7 +122,7 @@
                             <span id="upload-button" class="btn btn-warning btn-md">Browse</span>
                             <input name="fileUpload" type="file" id="fileUpload" />
                         </div>
-                        <input type="submit" value="Create" class="btn btn-success btn-block" />
+                        <input type="submit" value="Create" class="btn btn-success btn-block btn-demo" data-assigned-id = @User.Identity.Name />
                     </div>
                 }
             </div>

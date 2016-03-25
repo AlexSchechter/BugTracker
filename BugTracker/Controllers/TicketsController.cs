@@ -88,7 +88,7 @@ namespace BugTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "ProjectId,Title,Description,Type,Priority")] Ticket ticket)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !DemoEmails.Contains(User.Identity.Name))
             {
                 
                 ticket.CreationDate = DateTimeOffset.Now;
@@ -127,14 +127,8 @@ namespace BugTracker.Controllers
         [Authorize(Roles = "Admin,ProjectManager,Developer")]
         public async Task<ActionResult> Edit([Bind(Include = "Id,SubmittedById,DeveloperId,ProjectId,CreationDate,Title,Description,Status,Type,Priority")] Ticket updatedTicket)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !DemoEmails.Contains(User.Identity.Name))
             {
-                //string userId = User.Identity.GetUserId();
-                ////if (!CanEdit(updatedTicket))
-                //Project project = db.Projects.Find(updatedTicket.ProjectId);
-                //if (!(GetRole() == UserRole.Admin || project.ManagerId == userId || updatedTicket.DeveloperId == userId))
-                //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
                 ApplicationDbContext db2 = new ApplicationDbContext();
                 Ticket originalTicket = await db2.Tickets.FindAsync(updatedTicket.Id);
                 if (!CanEdit(originalTicket)) //need to call with originalTicket as updatedTicked does not include ticket.Project needed in CanEdit method

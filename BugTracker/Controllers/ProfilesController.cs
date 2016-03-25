@@ -63,7 +63,7 @@ namespace BugTracker.Controllers
         [HttpPost]
         public async Task<ActionResult> EditProfile(ProfileViewModel profile, UserRole? oldRole)
         {
-            if (profile == null)
+            if (profile == null || DemoEmails.Contains(User.Identity.Name))
                 RedirectToAction("Index", "Home");
 
             ApplicationUser user = db.Users.Find(profile.UserId);    

@@ -12,7 +12,10 @@ using System.Web.Mvc;
 namespace BugTracker.Controllers
 {
     public class BaseController : Controller
-    {    
+    {
+
+        protected readonly List<string> DemoEmails 
+            = new List<string> {"robb@stark.com", "petyr@littlefinger.com", "arya@stark.com", "cersei@lannister.com"};
         protected ApplicationDbContext db = new ApplicationDbContext();
         protected RoleManager<IdentityRole> roleManager;
         private ApplicationUserManager _userManager;

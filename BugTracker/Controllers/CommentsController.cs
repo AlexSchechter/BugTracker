@@ -50,7 +50,7 @@ namespace BugTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Body,TicketId")] Comment comment)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !DemoEmails.Contains(User.Identity.Name))
             {
                 comment.Date = DateTimeOffset.Now;
                 comment.CreatedById = GetUserInfo().Id;

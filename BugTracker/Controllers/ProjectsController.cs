@@ -56,7 +56,7 @@ namespace BugTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "ProjectId,ProjectName,SelectedDevelopersId,SelectedProjectManagerId")] ProjectViewModel model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !DemoEmails.Contains(User.Identity.Name))
             {
                 Project project = new Project();
                 project.Name = model.ProjectName;
@@ -106,7 +106,7 @@ namespace BugTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "ProjectId,ProjectName,SelectedDevelopersId,SelectedProjectManagerId")] ProjectViewModel model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !DemoEmails.Contains(User.Identity.Name))
             {
                 Project project = await db.Projects.FindAsync(model.ProjectId);
                 if (GetRole() == UserRole.ProjectManager && project.ManagerId != User.Identity.GetUserId())
